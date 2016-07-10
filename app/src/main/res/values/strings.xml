@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GUTFollower</string>
+    <string name="register"><u>Register</u></string>
+    <string name="login">Login</string>
+    <string name="record">Record</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+</resources>
