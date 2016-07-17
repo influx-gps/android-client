@@ -10,4 +10,12 @@
         android:layout_height="200dp"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send location"
+        android:id="@+id/send_button"
+        android:layout_gravity="center" />
+
+
 </FrameLayout>
