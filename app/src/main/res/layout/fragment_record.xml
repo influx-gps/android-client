@@ -15,6 +15,14 @@
         android:layout_height="wrap_content"
         android:text="Send location"
         android:id="@+id/send_button"
+        android:layout_gravity="center_horizontal|bottom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Response"
+        android:id="@+id/response_text"
         android:layout_gravity="center" />
 
 
