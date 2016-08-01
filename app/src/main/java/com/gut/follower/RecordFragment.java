@@ -97,8 +97,12 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
                 call.enqueue(new Callback<Track>() {
                     @Override
                     public void onResponse(Call<Track> call, Response<Track> response) {
-                        trackId = response.body().getId();
-                        Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful()) {
+                            trackId = response.body().getId();
+                            Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -123,7 +127,11 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
                     call.enqueue(new Callback<Track>() {
                         @Override
                         public void onResponse(Call<Track> call, Response<Track> response) {
-                            Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                            }
                         }
 
                         @Override
@@ -138,20 +146,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
         });
 
         return view;
-    }
-
-    private void setTrackId(String result){
-        if (result != null) {
-            try {
-                JSONObject response = new JSONObject(result);
-                trackId = response.getString("id");
-                Toast.makeText(getContext(), "TrackID: "+ trackId,
-                        Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     @Override

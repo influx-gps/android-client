@@ -1,6 +1,8 @@
 package com.gut.follower.utility;
 
 
+
+import com.gut.follower.model.Account;
 import com.gut.follower.model.Location;
 import com.gut.follower.model.Track;
 
@@ -18,7 +20,16 @@ import retrofit2.http.Query;
  */
 public interface JConductorService {
 
-    @GET("rest/track")
+    @POST("/register")
+    Call<Account> register(@Body Account account);
+
+    @POST("/login")
+    Call<String> login(@Body Account account);
+
+    @GET("/rest/track/{id}")
+    Call<Track> getTrack(@Path("id") String id);
+
+    @GET("/rest/track")
     Call<List<Track>> getTracks();
 
     @POST("/rest/track")
