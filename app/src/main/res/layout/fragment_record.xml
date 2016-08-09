@@ -10,20 +10,77 @@
         android:layout_height="200dp"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send location"
-        android:id="@+id/send_button"
-        android:layout_gravity="center_horizontal|bottom" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Response"
-        android:id="@+id/response_text"
-        android:layout_gravity="center" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/start_button"
+            android:layout_gravity="center_horizontal|bottom"
+            android:enabled="true"
+            android:focusable="true"
+            android:layout_marginRight="42dp"
+            android:layout_marginEnd="42dp"
+            android:layout_below="@+id/textView3"
+            android:layout_toLeftOf="@+id/recording_text"
+            android:layout_toStartOf="@+id/recording_text"
+            android:layout_marginTop="45dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:id="@+id/stop_button"
+            android:enabled="true"
+            android:focusable="true"
+            android:layout_alignTop="@+id/start_button"
+            android:layout_toRightOf="@+id/recording_text"
+            android:layout_toEndOf="@+id/recording_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Gps:"
+            android:id="@+id/textView2"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/start_button"
+            android:layout_alignStart="@+id/start_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="off"
+            android:id="@+id/gpsStatus_text"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_alignRight="@+id/start_button"
+            android:layout_alignEnd="@+id/start_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Recording:"
+            android:id="@+id/textView3"
+            android:layout_marginTop="46dp"
+            android:layout_below="@+id/textView2"
+            android:layout_alignLeft="@+id/start_button"
+            android:layout_alignStart="@+id/start_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Off"
+            android:id="@+id/recording_text"
+            android:layout_alignTop="@+id/textView3"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
 
 
 </FrameLayout>
