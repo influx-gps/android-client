@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void registerUser() {
         if(checkIfUserCredentialsNotEmpty()){
-            Call<Account> call = jConductorService.register(new Account(username.getText().toString(), password.getText().toString()));
+            Call<Account> call = jConductorService.register(new Account(username.getText().toString(), password.getText().toString(), "soemmail"));
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
@@ -65,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Account> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -76,10 +75,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser() {
         if(checkIfUserCredentialsNotEmpty()){
-            Call<String> call = jConductorService.login(new Account(username.getText().toString(), password.getText().toString()));
-            call.enqueue(new Callback<String>() {
+            Call<Account> call = jConductorService.login(new Account(username.getText().toString(), password.getText().toString()));
+            call.enqueue(new Callback<Account>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<Account> call, Response<Account> response) {
                     if (response.isSuccessful()) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
@@ -87,9 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<Account> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

@@ -3,7 +3,7 @@ package com.gut.follower.utility;
 
 
 import com.gut.follower.model.Account;
-import com.gut.follower.model.Location;
+import com.gut.follower.model.GutLocation;
 import com.gut.follower.model.Track;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface JConductorService {
     Call<Account> register(@Body Account account);
 
     @POST("/login")
-    Call<String> login(@Body Account account);
+    Call<Account> login(@Body Account account);
 
     @GET("/rest/track/{id}")
     Call<Track> getTrack(@Path("id") String id);
@@ -33,10 +33,10 @@ public interface JConductorService {
     Call<List<Track>> getTracks();
 
     @POST("/rest/track")
-    Call<Track> postTrack(@Body Location location);
+    Call<Track> postTrack(@Body GutLocation location);
 
     @POST("/rest/track/{id}")
     Call<Track> postLocation( @Path("id") String id,
-                              @Body Location location,
+                              @Body GutLocation location,
                               @Query("finished") boolean finished);
 }

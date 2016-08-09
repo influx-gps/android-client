@@ -23,14 +23,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.gut.follower.model.GutLocation;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +50,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
 
     private LocationManager locationManager;
     private Location location;
-
     private String trackId;
 
     public RecordFragment() {
@@ -93,7 +88,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
                 location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
-                Call<Track> call = jConductorService.postTrack(new com.gut.follower.model.Location(location.getLatitude(), location.getLongitude()));
+                GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+                Call<Track> call = jConductorService.postTrack(gutLocation);
                 call.enqueue(new Callback<Track>() {
                     @Override
                     public void onResponse(Call<Track> call, Response<Track> response) {
@@ -104,7 +100,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
                             Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Track> call, Throwable t) {
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -123,17 +118,15 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
                 stopButton.setEnabled(false);
                 isRecording = false;
                 if (location != null) {
-                    Call<Track> call = jConductorService.postLocation(trackId, new com.gut.follower.model.Location(location.getLatitude(), location.getLongitude()), true);
+                    GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+                    Call<Track> call = jConductorService.postLocation(trackId, gutLocation, true);
                     call.enqueue(new Callback<Track>() {
                         @Override
                         public void onResponse(Call<Track> call, Response<Track> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
-                            } else {
-
                             }
                         }
-
                         @Override
                         public void onFailure(Call<Track> call, Throwable t) {
 
@@ -170,13 +163,13 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
     public void onLocationChanged(Location location) {
         if(isRecording){
             this.location = location;
-            Call<Track> call = jConductorService.postLocation(trackId, new com.gut.follower.model.Location(location.getLatitude(), location.getLongitude()), false);
+            GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+            Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
             call.enqueue(new Callback<Track>() {
                 @Override
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     Toast.makeText(getContext(), "location sent", Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
 

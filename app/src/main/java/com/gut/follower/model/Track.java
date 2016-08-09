@@ -19,7 +19,27 @@ public class Track {
 
     private Double distance;
 
-    private List<Location> locations;
+    private long startTime;
+
+    private long finishTime;
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    private List<GutLocation> locations;
 
     public String getId() {
         return id;
@@ -69,11 +89,11 @@ public class Track {
         this.distance = distance;
     }
 
-    public List<Location> getLocations() {
+    public List<GutLocation> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<Location> locations) {
+    public void setLocations(List<GutLocation> locations) {
         this.locations = locations;
     }
 }
