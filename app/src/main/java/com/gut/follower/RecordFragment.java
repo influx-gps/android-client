@@ -33,9 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RecordFragment extends Fragment implements OnMapReadyCallback {
 
     private JConductorService jConductorService;
@@ -62,7 +59,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         recordingText = (TextView)view.findViewById(R.id.recording_text);
@@ -70,11 +68,13 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         startButton = (Button)view.findViewById(R.id.start_button);
         stopButton = (Button)view.findViewById(R.id.stop_button);
 
-        jConductorService = ServiceGenerator.createService(JConductorService.class, "adam", "adamg");
+        jConductorService = ServiceGenerator
+                .createService(JConductorService.class, BuildConfig.USERNAME, BuildConfig.PASSWORD);
         gpsProvider = new GpsProvider(getContext());
 
 
-        gpsStatusText.setText(String.valueOf(gpsProvider.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER)));
+        gpsStatusText.setText(String.valueOf(
+                gpsProvider.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER)));
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,9 +126,21 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         recordingText.setText("ON");
         startButton.setEnabled(false);
         stopButton.setEnabled(true);
-        location = gpsProvider.getLocationManager().getLastKnownLocation(gpsProvider.getLocationManager().getBestProvider(new Criteria(), false));
-        GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+
+        location = gpsProvider
+                .getLocationManager()
+                .getLastKnownLocation
+                        (gpsProvider
+                                .getLocationManager()
+                                .getBestProvider(new Criteria(), false));
+
+        GutLocation gutLocation = new GutLocation(
+                                            location.getLatitude(),
+                                            location.getLongitude(),
+                                            location.getTime());
+
         Call<Track> call = jConductorService.postTrack(gutLocation);
+
         call.enqueue(new Callback<Track>() {
             @Override
             public void onResponse(Call<Track> call, Response<Track> response) {
@@ -150,16 +162,24 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMyLocationEnabled(true);
-        LocationManager locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager =
+                (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        Location location =
+                locationManager
+                        .getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         if(location != null){
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+            map.animateCamera(
+                    CameraUpdateFactory
+                            .newLatLngZoom(new LatLng(location.getLatitude(),
+                                                      location.getLongitude()),
+                                                      13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(13)                   // Sets the zoom
-                    .build();                   // Creates a CameraPosition from the builder
+                    // Sets the center of the map to location user
+                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .zoom(13) // Sets the zoom
+                    .build(); // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }
@@ -172,7 +192,8 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
 
         public GpsProvider(Context mContext) {
             this.mContext = mContext;
-            this.locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            this.locationManager =
+                    (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         }
 
         public void start(){
@@ -191,8 +212,13 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         public void onLocationChanged(Location newLocation) {
             if(isRecording){
                 location = newLocation;
-                GutLocation gutLocation = new GutLocation(newLocation.getLatitude(), newLocation.getLongitude(), newLocation.getTime());
+                GutLocation gutLocation =
+                        new GutLocation(newLocation.getLatitude(),
+                                        newLocation.getLongitude(),
+                                        newLocation.getTime());
+
                 Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
+
                 call.enqueue(new Callback<Track>() {
                     @Override
                     public void onResponse(Call<Track> call, Response<Track> response) {

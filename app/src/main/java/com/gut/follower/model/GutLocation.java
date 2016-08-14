@@ -1,8 +1,6 @@
 package com.gut.follower.model;
 
-/**
- *
- */
+
 public class GutLocation {
 
     private double latitude;

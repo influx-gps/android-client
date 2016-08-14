@@ -1,8 +1,6 @@
 package com.gut.follower.model;
 
-/**
- *
- */
+
 public class Account {
 
     private String id;

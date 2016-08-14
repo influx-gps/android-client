@@ -60,7 +60,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser() {
         if(checkIfUserCredentialsNotEmpty()){
-            Call<Account> call = jConductorService.login(new Account(username.getText().toString(), password.getText().toString()));
+            Call<Account> call = jConductorService.login(createAccount(username, password));
+
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
@@ -68,24 +69,37 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                       response.message(),
+                                       Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<Account> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                                   t.getMessage(),
+                                   Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }
 
     private boolean checkIfUserCredentialsNotEmpty(){
-        if("".equals(username.getText().toString()) || "".equals(password.getText().toString())){
-            Toast.makeText(getApplicationContext(), "User credentials can not be empty", Toast.LENGTH_SHORT).show();
+        if(isEmpty(username) || isEmpty(password)){
+            Toast.makeText(getApplicationContext(),
+                           "User credentials can not be empty",
+                           Toast.LENGTH_SHORT).show();
             return false;
         } else {
             return true;
         }
+    }
+
+    private boolean isEmpty(EditText field){
+        return "".equals(field.getText().toString());
+    }
+
+    private Account createAccount(EditText username, EditText password){
+        return new Account(username.getText().toString(), password.getText().toString());
     }
 }
