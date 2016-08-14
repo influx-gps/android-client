@@ -2,17 +2,20 @@ package com.gut.follower;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,14 +23,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.gut.follower.model.GutLocation;
+import com.gut.follower.model.Track;
+import com.gut.follower.utility.JConductorService;
+import com.gut.follower.utility.ServiceGenerator;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -35,9 +38,19 @@ import java.net.URL;
  */
 public class RecordFragment extends Fragment implements OnMapReadyCallback {
 
+    private JConductorService jConductorService;
+    private GpsProvider gpsProvider;
+
     private GoogleMap map;
-    private Button sendButton;
-    private TextView responseText;
+    private Button startButton;
+    private Button stopButton;
+    private TextView gpsStatusText;
+    private TextView recordingText;
+
+    private boolean isRecording = false;
+
+    private Location location;
+    private String trackId;
 
     public RecordFragment() {
         // Required empty public constructor
@@ -51,19 +64,86 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        final SendLocation sendLocation = new SendLocation(this);
 
-        sendButton = (Button)view.findViewById(R.id.send_button);
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        recordingText = (TextView)view.findViewById(R.id.recording_text);
+        gpsStatusText = (TextView)view.findViewById(R.id.gpsStatus_text);
+        startButton = (Button)view.findViewById(R.id.start_button);
+        stopButton = (Button)view.findViewById(R.id.stop_button);
+
+        jConductorService = ServiceGenerator.createService(JConductorService.class, "adam", "adamg");
+        gpsProvider = new GpsProvider(getContext());
+
+
+        gpsStatusText.setText(String.valueOf(gpsProvider.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER)));
+
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendLocation.execute();
+                startRecording();
+
             }
         });
 
-        responseText = (TextView)view.findViewById(R.id.response_text);
+        stopButton.setEnabled(false);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopRecording();
+            }
+        });
 
         return view;
+    }
+
+    private void stopRecording() {
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
+        isRecording = false;
+        if (location != null) {
+            GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+            Call<Track> call = jConductorService.postLocation(trackId, gutLocation, true);
+            call.enqueue(new Callback<Track>() {
+                @Override
+                public void onResponse(Call<Track> call, Response<Track> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Track> call, Throwable t) {
+
+                }
+            });
+
+        }
+        recordingText.setText("OFF");
+        gpsProvider.stop();
+    }
+
+    private void startRecording() {
+        gpsProvider.start();
+        isRecording = true;
+        recordingText.setText("ON");
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+        location = gpsProvider.getLocationManager().getLastKnownLocation(gpsProvider.getLocationManager().getBestProvider(new Criteria(), false));
+        GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+        Call<Track> call = jConductorService.postTrack(gutLocation);
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                if (response.isSuccessful()) {
+                    trackId = response.body().getId();
+                    Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -84,65 +164,63 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void setResult(String result){
-        responseText.setText(result);
-    }
+    private class GpsProvider implements LocationListener{
 
-    private class SendLocation extends AsyncTask<Void, Void, Void> {
+        private Context mContext;
 
-        private RecordFragment recordFragment;
-        private String response;
+        private LocationManager locationManager;
 
-        public SendLocation(RecordFragment recordFragment) {
-            this.recordFragment = recordFragment;
+        public GpsProvider(Context mContext) {
+            this.mContext = mContext;
+            this.locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        public void start(){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }
+
+        public void stop(){
+            locationManager.removeUpdates(this);
+        }
+
+        public LocationManager getLocationManager() {
+            return locationManager;
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            String json = "{\"latitude\":\"222\", \"longitude\":\"222\"}";
-            postData(json);
-            return null;
-        }
+        public void onLocationChanged(Location newLocation) {
+            if(isRecording){
+                location = newLocation;
+                GutLocation gutLocation = new GutLocation(newLocation.getLatitude(), newLocation.getLongitude(), newLocation.getTime());
+                Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
+                call.enqueue(new Callback<Track>() {
+                    @Override
+                    public void onResponse(Call<Track> call, Response<Track> response) {
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            recordFragment.setResult(response);
-        }
+                    }
+                    @Override
+                    public void onFailure(Call<Track> call, Throwable t) {
 
-        public void postData(String json) {
-            HttpURLConnection urlConnection;
-            try {
-                //Connect
-                urlConnection = (HttpURLConnection) ((new URL("http://192.168.1.27:8080/track").openConnection()));
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty("Accept", "application/json");
-                urlConnection.setRequestMethod("POST");
-                urlConnection.connect();
-
-                //Write
-                OutputStream outputStream = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                writer.write(json);
-                writer.close();
-                outputStream.close();
-
-                //Read
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-                response = sb.toString();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                    }
+                });
             }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            gpsStatusText.setText("ON");
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            gpsStatusText.setText("OFF");
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
         }
     }
 }

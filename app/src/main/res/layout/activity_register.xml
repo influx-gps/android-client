@@ -22,8 +22,16 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
+            android:inputType="textEmailAddress"
+            android:drawableLeft="@drawable/ic_email_black_24dp"
+            android:ems="10"
+            android:id="@+id/email" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:inputType="text"
+            android:maxLines="1"
             android:drawableLeft="@drawable/ic_person_black_24dp"
             android:id="@+id/username" />
 
@@ -39,20 +47,9 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:id="@+id/login_btn"
-            android:background="@color/colorPrimary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="italic"
             android:text="@string/register"
-            android:id="@+id/register"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="15dp"
-            android:clickable="true" />
+            android:id="@+id/register_btn"
+            android:background="@color/colorPrimary" />
 
     </LinearLayout>
 
