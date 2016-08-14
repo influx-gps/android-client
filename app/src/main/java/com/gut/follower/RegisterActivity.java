@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.gut.follower.model.Account;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
