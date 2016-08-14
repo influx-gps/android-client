@@ -36,9 +36,10 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecordFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class RecordFragment extends Fragment implements OnMapReadyCallback {
 
     private JConductorService jConductorService;
+    private GpsProvider gpsProvider;
 
     private GoogleMap map;
     private Button startButton;
@@ -48,7 +49,6 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
 
     private boolean isRecording = false;
 
-    private LocationManager locationManager;
     private Location location;
     private String trackId;
 
@@ -64,81 +64,86 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
         recordingText = (TextView)view.findViewById(R.id.recording_text);
         gpsStatusText = (TextView)view.findViewById(R.id.gpsStatus_text);
+        startButton = (Button)view.findViewById(R.id.start_button);
+        stopButton = (Button)view.findViewById(R.id.stop_button);
 
         jConductorService = ServiceGenerator.createService(JConductorService.class, "adam", "adamg");
+        gpsProvider = new GpsProvider(getContext());
 
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                0,
-                0,
-                this
-        );
 
-        gpsStatusText.setText(String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
+        gpsStatusText.setText(String.valueOf(gpsProvider.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER)));
 
-        startButton = (Button)view.findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isRecording = true;
-                recordingText.setText("ON");
-                startButton.setEnabled(false);
-                stopButton.setEnabled(true);
-                location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
-                GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
-                Call<Track> call = jConductorService.postTrack(gutLocation);
-                call.enqueue(new Callback<Track>() {
-                    @Override
-                    public void onResponse(Call<Track> call, Response<Track> response) {
-                        if (response.isSuccessful()) {
-                            trackId = response.body().getId();
-                            Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Track> call, Throwable t) {
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                startRecording();
 
             }
         });
 
-        stopButton = (Button)view.findViewById(R.id.stop_button);
         stopButton.setEnabled(false);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startButton.setEnabled(true);
-                stopButton.setEnabled(false);
-                isRecording = false;
-                if (location != null) {
-                    GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
-                    Call<Track> call = jConductorService.postLocation(trackId, gutLocation, true);
-                    call.enqueue(new Callback<Track>() {
-                        @Override
-                        public void onResponse(Call<Track> call, Response<Track> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Track> call, Throwable t) {
-
-                        }
-                    });
-
-                }
-                recordingText.setText("OFF");
+                stopRecording();
             }
         });
 
         return view;
+    }
+
+    private void stopRecording() {
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
+        isRecording = false;
+        if (location != null) {
+            GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+            Call<Track> call = jConductorService.postLocation(trackId, gutLocation, true);
+            call.enqueue(new Callback<Track>() {
+                @Override
+                public void onResponse(Call<Track> call, Response<Track> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Track> call, Throwable t) {
+
+                }
+            });
+
+        }
+        recordingText.setText("OFF");
+        gpsProvider.stop();
+    }
+
+    private void startRecording() {
+        gpsProvider.start();
+        isRecording = true;
+        recordingText.setText("ON");
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+        location = gpsProvider.getLocationManager().getLastKnownLocation(gpsProvider.getLocationManager().getBestProvider(new Criteria(), false));
+        GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
+        Call<Track> call = jConductorService.postTrack(gutLocation);
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                if (response.isSuccessful()) {
+                    trackId = response.body().getId();
+                    Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -159,43 +164,63 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback, Loca
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        if(isRecording){
-            this.location = location;
-            GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
-            Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
-            call.enqueue(new Callback<Track>() {
-                @Override
-                public void onResponse(Call<Track> call, Response<Track> response) {
-                    Toast.makeText(getContext(), "location sent", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onFailure(Call<Track> call, Throwable t) {
+    private class GpsProvider implements LocationListener{
 
-                }
-            });
+        private Context mContext;
+
+        private LocationManager locationManager;
+
+        public GpsProvider(Context mContext) {
+            this.mContext = mContext;
+            this.locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         }
-    }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
+        public void start(){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }
 
-    }
+        public void stop(){
+            locationManager.removeUpdates(this);
+        }
 
-    @Override
-    public void onProviderEnabled(String s) {
-        gpsStatusText.setText("ON");
-        Toast.makeText(getContext(), "Gps is turned on!! ",
-                Toast.LENGTH_SHORT).show();
-    }
+        public LocationManager getLocationManager() {
+            return locationManager;
+        }
 
-    @Override
-    public void onProviderDisabled(String s) {
-        gpsStatusText.setText("OFF");
-        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(intent);
-        Toast.makeText(getContext(), "Gps is turned off!! ",
-                Toast.LENGTH_SHORT).show();
+        @Override
+        public void onLocationChanged(Location newLocation) {
+            if(isRecording){
+                location = newLocation;
+                GutLocation gutLocation = new GutLocation(newLocation.getLatitude(), newLocation.getLongitude(), newLocation.getTime());
+                Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
+                call.enqueue(new Callback<Track>() {
+                    @Override
+                    public void onResponse(Call<Track> call, Response<Track> response) {
+
+                    }
+                    @Override
+                    public void onFailure(Call<Track> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            gpsStatusText.setText("ON");
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            gpsStatusText.setText("OFF");
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
     }
 }
