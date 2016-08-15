@@ -17,6 +17,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.gut.follower.commons.InputValidator.checkIfUserCredentialsNotEmpty;
+import static com.gut.follower.commons.InputValidator.createAccount;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
@@ -58,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void loginUser() {
-        if(checkIfUserCredentialsNotEmpty()){
+    public void loginUser() {
+        // TODO: This method is used in two Activities - we need to find out how to separate it.
+        if(checkIfUserCredentialsNotEmpty(username, password)){
             Call<Account> call = jConductorService.login(createAccount(username, password));
-
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
@@ -82,24 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    private boolean checkIfUserCredentialsNotEmpty(){
-        if(isEmpty(username) || isEmpty(password)){
+        else
             Toast.makeText(getApplicationContext(),
                            "User credentials can not be empty",
                            Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isEmpty(EditText field){
-        return "".equals(field.getText().toString());
-    }
-
-    private Account createAccount(EditText username, EditText password){
-        return new Account(username.getText().toString(), password.getText().toString());
     }
 }

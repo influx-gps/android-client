@@ -96,23 +96,26 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void stopRecording() {
+
         startButton.setEnabled(true);
         stopButton.setEnabled(false);
         isRecording = false;
+
         if (location != null) {
-            GutLocation gutLocation = new GutLocation(location.getLatitude(), location.getLongitude(), location.getTime());
-            Call<Track> call = jConductorService.postLocation(trackId, gutLocation, true);
+            Call<Track> call = jConductorService.postLocation(trackId,
+                                                 gpsProvider.provideLocationData(location),
+                                                 true);
             call.enqueue(new Callback<Track>() {
                 @Override
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Tracked saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),
+                                       "Tracked saved",
+                                       Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
-                public void onFailure(Call<Track> call, Throwable t) {
-
-                }
+                public void onFailure(Call<Track> call, Throwable t) { }
             });
 
         }
@@ -134,26 +137,26 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
                                 .getLocationManager()
                                 .getBestProvider(new Criteria(), false));
 
-        GutLocation gutLocation = new GutLocation(
-                                            location.getLatitude(),
-                                            location.getLongitude(),
-                                            location.getTime());
-
-        Call<Track> call = jConductorService.postTrack(gutLocation);
-
+        Call<Track> call = jConductorService.postTrack(gpsProvider.provideLocationData(location));
         call.enqueue(new Callback<Track>() {
             @Override
             public void onResponse(Call<Track> call, Response<Track> response) {
                 if (response.isSuccessful()) {
                     trackId = response.body().getId();
-                    Toast.makeText(getContext(), trackId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),
+                                   trackId,
+                                   Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),
+                                   response.message(),
+                                   Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),
+                               t.getMessage(),
+                               Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -162,12 +165,14 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMyLocationEnabled(true);
+
         LocationManager locationManager =
                 (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location =
                 locationManager
                         .getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
         if(location != null){
             map.animateCamera(
                     CameraUpdateFactory
@@ -185,7 +190,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private class GpsProvider implements LocationListener{
-
+    // TODO: This class should be separated.
         private Context mContext;
 
         private LocationManager locationManager;
@@ -194,6 +199,12 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
             this.mContext = mContext;
             this.locationManager =
                     (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        public GutLocation provideLocationData(Location location){
+                return new GutLocation(location.getLatitude(),
+                        location.getLongitude(),
+                        location.getTime());
         }
 
         public void start(){
