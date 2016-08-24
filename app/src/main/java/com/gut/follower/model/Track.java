@@ -2,9 +2,7 @@ package com.gut.follower.model;
 
 import java.util.List;
 
-/**
- *
- */
+
 public class Track {
 
     private String id;

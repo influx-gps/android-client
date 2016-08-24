@@ -17,6 +17,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.gut.follower.commons.InputValidator.checkIfUserCredentialsNotEmpty;
+import static com.gut.follower.commons.InputValidator.createAccount;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
@@ -58,9 +61,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void loginUser() {
-        if(checkIfUserCredentialsNotEmpty()){
-            Call<Account> call = jConductorService.login(new Account(username.getText().toString(), password.getText().toString()));
+    public void loginUser() {
+        // TODO: This method is used in two Activities - we need to find out how to separate it.
+        if(checkIfUserCredentialsNotEmpty(username, password)){
+            Call<Account> call = jConductorService.login(createAccount(username, password));
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
@@ -68,24 +72,22 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                       response.message(),
+                                       Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<Account> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                                   t.getMessage(),
+                                   Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
-    }
-
-    private boolean checkIfUserCredentialsNotEmpty(){
-        if("".equals(username.getText().toString()) || "".equals(password.getText().toString())){
-            Toast.makeText(getApplicationContext(), "User credentials can not be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
+        else
+            Toast.makeText(getApplicationContext(),
+                           "User credentials can not be empty",
+                           Toast.LENGTH_SHORT).show();
     }
 }

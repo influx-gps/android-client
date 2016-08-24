@@ -2,6 +2,8 @@ package com.gut.follower.utility;
 
 import android.util.Base64;
 
+import com.gut.follower.BuildConfig;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -11,12 +13,10 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- *
- */
+
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "http://192.168.0.15:8080/";
+    public static final String API_BASE_URL = BuildConfig.HOST;
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
