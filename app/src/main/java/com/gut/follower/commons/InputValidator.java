@@ -7,26 +7,24 @@ import com.gut.follower.model.Account;
 
 public class InputValidator {
 
-    public static boolean checkIfUserCredentialsNotEmpty(EditText username, EditText password,
-                                                         EditText email){
+    public static boolean checkIfUserCredentialsNotEmpty(String username, String password,
+                                                         String email){
         return !isEmpty(username) && !isEmpty(password) && !isEmpty(email);
     }
 
-    public static boolean checkIfUserCredentialsNotEmpty(EditText username, EditText password){
+    public static boolean checkIfUserCredentialsNotEmpty(String username, String password){
         return !isEmpty(username) && !isEmpty(password);
     }
 
-    private static boolean isEmpty(EditText field){
-        return "".equals(field.getText().toString());
+    private static boolean isEmpty(String field){
+        return "".equals(field);
     }
 
-    public static Account createAccount(EditText username, EditText password){
-        return new Account(username.getText().toString(), password.getText().toString());
+    public static Account createAccount(String username, String password){
+        return new Account(username, password);
     }
 
-    public static Account createAccount(EditText username, EditText password, EditText email){
-        return new Account(username.getText().toString(),
-                           password.getText().toString(),
-                           email.getText().toString());
+    public static Account createAccount(String username, String password, String email){
+        return new Account(username, password, email);
     }
 }

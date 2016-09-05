@@ -1,4 +1,4 @@
-package com.gut.follower;
+package com.gut.follower.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
