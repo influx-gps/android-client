@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.gut.follower.R;
 import com.gut.follower.activities.fragments.HistoryFragment;
 import com.gut.follower.activities.fragments.RecordFragment;
+import com.gut.follower.activities.fragments.UserPanelFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItemId){
                     case R.id.record_item:  commitFragment(new RecordFragment()); break;
                     case R.id.history_item: commitFragment(new HistoryFragment());break;
-                    case R.id.profile_item: break;
+                    case R.id.profile_item: commitFragment(new UserPanelFragment());break;
                 }
             }
 

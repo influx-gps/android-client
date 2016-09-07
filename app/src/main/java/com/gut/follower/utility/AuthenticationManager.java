@@ -23,6 +23,10 @@ public class AuthenticationManager {
     private String password;
     private String email;
 
+    public AuthenticationManager(AppCompatActivity callerActivity) {
+        this.callerActivity = callerActivity;
+    }
+
     public AuthenticationManager(AppCompatActivity callerActivity, EditText username, EditText password) {
         this.callerActivity = callerActivity;
         this.restApi = ServiceGenerator.createService(JConductorService.class);
