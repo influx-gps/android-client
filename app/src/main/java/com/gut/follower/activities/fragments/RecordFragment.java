@@ -3,6 +3,7 @@ package com.gut.follower.activities.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,18 +18,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.BuildConfig;
 import com.gut.follower.R;
 import com.gut.follower.model.GutLocation;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +58,10 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
     private Location location;
     private String trackId;
 
+    PolylineOptions options;
+    Polyline polyline;
+    List<LatLng> positions;
+
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -69,6 +80,11 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         gpsStatusText = (TextView)view.findViewById(R.id.gpsStatus_text);
         startButton = (Button)view.findViewById(R.id.start_button);
         stopButton = (Button)view.findViewById(R.id.stop_button);
+
+        options = new PolylineOptions()
+                .color(Color.BLUE)
+                .width(5f);
+        positions = new LinkedList<>();
 
         jConductorService = ServiceGenerator
                 .createService(JConductorService.class, BuildConfig.USERNAME, BuildConfig.PASSWORD);
@@ -102,6 +118,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         startButton.setEnabled(true);
         stopButton.setEnabled(false);
         isRecording = false;
+
 
         if (location != null) {
             Call<Track> call = jConductorService.postLocation(trackId,
@@ -138,6 +155,14 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
                         (gpsProvider
                                 .getLocationManager()
                                 .getBestProvider(new Criteria(), false));
+
+        if (polyline != null) {
+            polyline.remove();
+            positions = new LinkedList<>();
+        }
+        positions.add(new LatLng(location.getLatitude(), location.getLongitude()));
+        options.addAll(positions);
+        polyline = map.addPolyline(options);
 
         Call<Track> call = jConductorService.postTrack(gpsProvider.provideLocationData(location));
         call.enqueue(new Callback<Track>() {
@@ -180,7 +205,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
                     CameraUpdateFactory
                             .newLatLngZoom(new LatLng(location.getLatitude(),
                                                       location.getLongitude()),
-                                                      13));
+                                                      15));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     // Sets the center of the map to location user
@@ -210,7 +235,7 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
         }
 
         public void start(){
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 3, this);
         }
 
         public void stop(){
@@ -229,6 +254,13 @@ public class RecordFragment extends Fragment implements OnMapReadyCallback {
                         new GutLocation(newLocation.getLatitude(),
                                         newLocation.getLongitude(),
                                         newLocation.getTime());
+
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                positions.add(latLng);
+                polyline.setPoints(positions);
+
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                map.animateCamera(cameraUpdate);
 
                 Call<Track> call = jConductorService.postLocation(trackId, gutLocation, false);
 
