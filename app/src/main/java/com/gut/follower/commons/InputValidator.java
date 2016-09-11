@@ -1,8 +1,6 @@
 package com.gut.follower.commons;
 
 
-import android.widget.EditText;
-
 import com.gut.follower.model.Account;
 
 public class InputValidator {
