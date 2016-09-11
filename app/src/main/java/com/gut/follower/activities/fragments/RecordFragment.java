@@ -1,4 +1,4 @@
-package com.gut.follower;
+package com.gut.follower.activities.fragments;
 
 
 import android.content.Context;
@@ -23,6 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.gut.follower.BuildConfig;
+import com.gut.follower.R;
 import com.gut.follower.model.GutLocation;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.JConductorService;
