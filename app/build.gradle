@@ -13,7 +13,7 @@ android {
     }
     productFlavors {
         develop {
-            buildConfigField 'String', 'HOST', '"http://192.168.0.15:8080"'
+            buildConfigField 'String', 'HOST', '"http://jconductor.cfapps.io"'
             buildConfigField 'String', 'USERNAME', '"TestUser"'
             buildConfigField 'String', 'PASSWORD', '"TestPassword"'
         }
