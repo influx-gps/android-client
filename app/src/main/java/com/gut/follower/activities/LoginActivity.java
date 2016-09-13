@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.gut.follower.R;
 import com.gut.follower.utility.AuthenticationManager;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText username;
     private EditText password;

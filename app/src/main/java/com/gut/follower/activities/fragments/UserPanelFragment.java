@@ -14,6 +14,7 @@ import com.gut.follower.activities.LoginActivity;
 import com.gut.follower.utility.AuthenticationManager;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
+import com.gut.follower.utility.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,9 +49,7 @@ public class UserPanelFragment extends Fragment {
     }
 
     private void logout() {
-        Intent intent = new Intent(this.getContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        this.startActivity(intent);
+        new AuthenticationManager(this.getActivity()).logout();
     }
 
 }
