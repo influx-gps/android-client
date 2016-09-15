@@ -82,7 +82,9 @@ public class TrackService {
 
     private JConductorService getRestService(){
         return ServiceGenerator
-                .createService(JConductorService.class, BuildConfig.USERNAME, BuildConfig.PASSWORD);
+                .createService(JConductorService.class,
+                        SessionManager.getUsername(recordView.getContext()),
+                        SessionManager.getPassword(recordView.getContext()));
     }
 
     private GutLocation getGutLocation(Location location){
