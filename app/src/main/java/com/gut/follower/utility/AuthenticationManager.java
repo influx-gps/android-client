@@ -1,10 +1,12 @@
 package com.gut.follower.utility;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gut.follower.activities.LoginActivity;
 import com.gut.follower.activities.MainActivity;
 import com.gut.follower.model.Account;
 
@@ -17,24 +19,25 @@ import static com.gut.follower.commons.InputValidator.createAccount;
 
 public class AuthenticationManager {
 
-    private AppCompatActivity callerActivity;
+    private FragmentActivity callerActivity;
     private JConductorService restApi;
     private String username;
     private String password;
     private String email;
 
-    public AuthenticationManager(AppCompatActivity callerActivity) {
+
+    public AuthenticationManager(FragmentActivity callerActivity) {
         this.callerActivity = callerActivity;
     }
 
-    public AuthenticationManager(AppCompatActivity callerActivity, EditText username, EditText password) {
+    public AuthenticationManager(FragmentActivity callerActivity, EditText username, EditText password) {
         this.callerActivity = callerActivity;
         this.restApi = ServiceGenerator.createService(JConductorService.class);
         this.username = username.getText().toString();
         this.password = password.getText().toString();
     }
 
-    public AuthenticationManager(AppCompatActivity callerActivity, EditText username, EditText password, EditText email) {
+    public AuthenticationManager(FragmentActivity callerActivity, EditText username, EditText password, EditText email) {
         this.callerActivity = callerActivity;
         this.restApi = ServiceGenerator.createService(JConductorService.class);
         this.username = username.getText().toString();
@@ -49,6 +52,7 @@ public class AuthenticationManager {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
                     if (response.isSuccessful()) {
+                        SessionManager.saveUserCredentials(callerActivity.getApplicationContext(), username, password);
                         Intent intent = new Intent(callerActivity.getApplicationContext(), MainActivity.class);
                         callerActivity.startActivity(intent);
                     } else {
@@ -94,6 +98,13 @@ public class AuthenticationManager {
                 }
             });
         }
+    }
+
+    public void logout(){
+        SessionManager.clearUserCredentials(callerActivity.getApplicationContext());
+        Intent intent = new Intent(callerActivity.getApplicationContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        callerActivity.startActivity(intent);
     }
 
 }

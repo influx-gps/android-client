@@ -11,7 +11,7 @@ import com.gut.follower.utility.AuthenticationManager;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
 
-public class RegisterActivity extends AppCompatActivity{
+public class RegisterActivity extends BaseActivity{
 
     private EditText email;
     private EditText username;
