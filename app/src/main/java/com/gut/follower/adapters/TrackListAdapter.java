@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -43,7 +44,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Track track = trackList.get(position);
-        holder.locations = getLatLngLocations(track.getLocations());
+        holder.addPolyline(getLatLngLocations(track.getLocations()));
     }
 
     @Override
@@ -51,18 +52,11 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.MyVi
         return trackList.size();
     }
 
-    private String getElapsedTime(Track track) {
-        long startTime = track.getStartTime();
-        long finishTime = track.getFinishTime();
-
-        long time = (finishTime - startTime) / 1000;
-        return String.valueOf(time);
-    }
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback{
         public GoogleMap map;
         public MapView mapView;
         public List<LatLng> locations;
+        public PolylineOptions options;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -70,17 +64,21 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.MyVi
 
             mapView.onCreate(null);
             mapView.getMapAsync(this);
+
+            options = new PolylineOptions()
+                    .color(Color.BLUE)
+                    .width(8f);
         }
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
+            MapsInitializer.initialize(mContext);
             map = googleMap;
+        }
 
-            if(!locations.isEmpty()){
-                PolylineOptions options = new PolylineOptions()
-                        .color(Color.BLUE)
-                        .width(5f)
-                        .addAll(locations);
+        public void addPolyline(List<LatLng> locations){
+            if (map != null) {
+                options.addAll(locations);
                 map.addPolyline(options);
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
                 for(LatLng location: locations){

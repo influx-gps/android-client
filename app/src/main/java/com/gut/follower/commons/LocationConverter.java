@@ -1,5 +1,7 @@
 package com.gut.follower.commons;
 
+import android.location.Location;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.gut.follower.model.GutLocation;
 
@@ -13,5 +15,11 @@ public class LocationConverter {
             newLocations.add(new LatLng(location.getLatitude(), location.getLongitude()));
         }
         return newLocations;
+    }
+
+    public static GutLocation getGutLocation(Location location){
+        return new GutLocation(location.getLatitude(),
+                location.getLongitude(),
+                location.getTime());
     }
 }

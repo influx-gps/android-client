@@ -1,7 +1,6 @@
-package com.gut.follower.activities.fragments;
+package com.gut.follower.activities.mainactivity.userPanelFragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,21 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.gut.follower.R;
-import com.gut.follower.activities.LoginActivity;
 import com.gut.follower.utility.AuthenticationManager;
-import com.gut.follower.utility.JConductorService;
-import com.gut.follower.utility.ServiceGenerator;
-import com.gut.follower.utility.SessionManager;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserPanelFragment extends Fragment {
+public class UserPanelFragment extends Fragment implements UserPanelContract.View{
 
+    private UserPanelContract.Presenter mPresenter;
     private Button mLogoutBtn;
 
     public UserPanelFragment() {
@@ -37,19 +29,17 @@ public class UserPanelFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_panel, container, false);
 
+        mPresenter = new UserPanelPresenter();
+        mPresenter.attachView(this);
         mLogoutBtn = (Button)view.findViewById(R.id.logout_btn);
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout();
+                mPresenter.logout();
             }
         });
 
         return view;
-    }
-
-    private void logout() {
-        new AuthenticationManager(this.getActivity()).logout();
     }
 
 }

@@ -6,23 +6,25 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.gut.follower.activities.mainactivity.recordfragment.RecordPresenter;
+
 public class GpsProvider implements LocationListener{
-    private RecordView mCallerFragment;
+    private RecordPresenter presenter;
     private LocationManager locationManager;
 
-    public GpsProvider(RecordView mCallerFragment) {
-        this.mCallerFragment = mCallerFragment;
+    public GpsProvider(RecordPresenter presenter) {
+        this.presenter = presenter;
         this.locationManager = getLocationManagerInstance();
     }
 
     private LocationManager getLocationManagerInstance(){
-        return (LocationManager) mCallerFragment
+        return (LocationManager) presenter
                 .getContext()
                 .getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void start(){
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 3, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     public void stop(){
@@ -35,7 +37,7 @@ public class GpsProvider implements LocationListener{
 
     @Override
     public void onLocationChanged(Location newLocation) {
-        new TrackService(mCallerFragment).postLocation(newLocation);
+        presenter.postLocation(newLocation);
     }
 
     @Override

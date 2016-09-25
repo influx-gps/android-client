@@ -1,14 +1,14 @@
-package com.gut.follower.activities;
+package com.gut.follower.activities.mainactivity;
 
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.gut.follower.R;
-import com.gut.follower.activities.fragments.HistoryFragment;
-import com.gut.follower.activities.fragments.RecordFragment;
-import com.gut.follower.activities.fragments.UserPanelFragment;
+import com.gut.follower.activities.BaseActivity;
+import com.gut.follower.activities.mainactivity.historyfragment.HistoryFragment;
+import com.gut.follower.activities.mainactivity.recordfragment.RecordFragment;
+import com.gut.follower.activities.mainactivity.userPanelFragment.UserPanelFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
