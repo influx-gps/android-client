@@ -1,9 +1,12 @@
 package com.gut.follower.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.gut.follower.activities.loginactivity.LoginActivity;
 import com.gut.follower.activities.mainactivity.MainActivity;
@@ -41,5 +44,15 @@ public class BaseActivity extends AppCompatActivity{
         Intent intent = new Intent(getApplicationContext(), activity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    protected void hideKeyboard(AppCompatActivity activity){
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        view.clearFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

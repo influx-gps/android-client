@@ -8,7 +8,17 @@ public interface LoginContract {
     interface View extends BaseView{
         void showLoadingSpinner();
 
+        void hideLoadingSpinner();
+
         void hideUserLoginForm();
+
+        void showUserLoginForm();
+
+        void showToast(String message);
+
+        void startMainActivity();
+
+        void hideKeyboard();
     }
 
     interface Presenter extends BasePresenter<View>{

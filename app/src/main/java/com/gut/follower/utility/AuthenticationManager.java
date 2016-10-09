@@ -19,34 +19,9 @@ import static com.gut.follower.commons.InputValidator.createAccount;
 
 public class AuthenticationManager {
 
-    private Context context;
-    private JConductorService restApi;
-    private String username;
-    private String password;
-    private String email;
-
-
-    public AuthenticationManager(Context context) {
-        this.context = context;
-    }
-
-    public AuthenticationManager(Context context, String username, String password) {
-        this.context = context;
-        this.restApi = ServiceGenerator.createService(JConductorService.class);
-        this.username = username;
-        this.password = password;
-    }
-
-    public AuthenticationManager(Context context, String username, String password, String email) {
-        this.context = context;
-        this.restApi = ServiceGenerator.createService(JConductorService.class);
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
-
-    public void login(){
+    public static void login(final Context context, final String username, final String password){
         if(checkIfUserCredentialsNotEmpty(username, password)){
+            JConductorService restApi = ServiceGenerator.createService(JConductorService.class);
             Call<Account> call = restApi.login(createAccount(username, password));
             call.enqueue(new Callback<Account>() {
                 @Override
@@ -75,32 +50,7 @@ public class AuthenticationManager {
                     Toast.LENGTH_SHORT).show();
     }
 
-    public void register(){
-        if(checkIfUserCredentialsNotEmpty(username, password, email)){
-            Account account = createAccount(username, password, email);
-            Call<Account> call = restApi.register(account);
-            call.enqueue(new Callback<Account>() {
-                @Override
-                public void onResponse(Call<Account> call, Response<Account> response) {
-                    if (response.isSuccessful()) {
-                        login();
-                    } else {
-                        Toast.makeText(context.getApplicationContext(),
-                                response.message(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<Account> call, Throwable t) {
-                    Toast.makeText(context.getApplicationContext(),
-                            t.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    public void logout(){
+    public static void logout(Context context){
         SessionManager.clearUserCredentials(context.getApplicationContext());
         Intent intent = new Intent(context.getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

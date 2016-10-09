@@ -10,7 +10,7 @@ public class UserPanelPresenter implements UserPanelContract.Presenter{
 
     @Override
     public void logout() {
-        new AuthenticationManager(view.getContext()).logout();
+        AuthenticationManager.logout(view.getContext());
     }
 
     @Override
