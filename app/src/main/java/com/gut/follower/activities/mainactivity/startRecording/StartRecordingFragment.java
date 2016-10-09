@@ -1,8 +1,8 @@
-package com.gut.follower.activities.mainactivity.recordfragment;
+package com.gut.follower.activities.mainactivity.startRecording;
 
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -13,39 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.R;
+import com.gut.follower.activities.record.RecordActivity;
 
-import java.util.List;
 
+public class StartRecordingFragment extends Fragment implements StartRecordingContract.View, OnMapReadyCallback {
 
-public class RecordFragment extends Fragment implements RecordContract.View, OnMapReadyCallback {
+    private StartRecordingContract.Presenter mPresenter;
 
-    private RecordContract.Presenter presenter;
-
-    private PolylineOptions options;
-    private Polyline polyline;
     private GoogleMap map;
 
-    private TextView recordingText;
     private TextView gpsStatusText;
     private Button startButton;
-    private Button stopButton;
 
-    public RecordFragment() {}
+    public StartRecordingFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_record, container, false);
+        View view = inflater.inflate(R.layout.fragment_start_recording, container, false);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
@@ -58,18 +51,12 @@ public class RecordFragment extends Fragment implements RecordContract.View, OnM
 
 
     private void initFragmentVariables(View view) {
-        presenter = new RecordPresenter(this);
+        mPresenter = new StartRecordingPresenter();
+        mPresenter.attachView(this);
 
-        recordingText = (TextView)view.findViewById(R.id.recording_text);
-        gpsStatusText = (TextView)view.findViewById(R.id.gpsStatus_text);
-        startButton = (Button)view.findViewById(R.id.start_button);
-        stopButton = (Button)view.findViewById(R.id.stop_button);
-
-        options = new PolylineOptions()
-                .color(Color.BLUE)
-                .width(5f);
-
-        gpsStatusText.setText(presenter.getGpsStatus());
+        gpsStatusText = (TextView) view.findViewById(R.id.gpsStatus_text);
+        startButton = (Button) view.findViewById(R.id.start_button);
+        gpsStatusText.setText(String.valueOf(getGpsStatus()));
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,53 +64,21 @@ public class RecordFragment extends Fragment implements RecordContract.View, OnM
                 startRecording();
             }
         });
-
-        stopButton.setEnabled(false);
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopRecording();
-            }
-        });
     }
 
     @Override
     public void onDestroy() {
-        presenter.detachView();
+        mPresenter.detachView();
         super.onDestroy();
     }
 
-    @Override
-    public void drawTrackOnMap(List<LatLng> locations) {
-        if (polyline == null) {
-            options.addAll(locations);
-            polyline = map.addPolyline(options);
-        } else {
-            polyline.setPoints(locations);
-        }
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(locations.get(locations.size()-1), 15);
-        map.animateCamera(cameraUpdate);
-    }
-
-    private void stopRecording() {
-        startButton.setEnabled(true);
-        stopButton.setEnabled(false);
-
-        presenter.endTrack();
-
-        recordingText.setText("OFF");
-    }
-
     private void startRecording() {
-        recordingText.setText("ON");
-        startButton.setEnabled(false);
-        stopButton.setEnabled(true);
-
-        if (polyline != null) {
-            polyline.remove();
+        if (getGpsStatus()) {
+            Intent intent = new Intent(getContext(), RecordActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "Turn on gps", Toast.LENGTH_SHORT).show();
         }
-
-        presenter.postTrack();
     }
 
     @Override
@@ -145,5 +100,10 @@ public class RecordFragment extends Fragment implements RecordContract.View, OnM
                                                       location.getLongitude()),
                                                       15));
         }
+    }
+
+    public boolean getGpsStatus() {
+        LocationManager lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 }

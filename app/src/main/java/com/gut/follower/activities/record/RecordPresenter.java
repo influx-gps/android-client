@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.recordfragment;
+package com.gut.follower.activities.record;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -7,7 +7,6 @@ import android.location.LocationManager;
 import android.widget.Toast;
 
 import com.gut.follower.R;
-import com.gut.follower.model.GutLocation;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.GpsProvider;
 import com.gut.follower.utility.JConductorService;
@@ -21,29 +20,27 @@ import retrofit2.Response;
 import static com.gut.follower.commons.LocationConverter.getGutLocation;
 import static com.gut.follower.commons.LocationConverter.getLatLngLocations;
 
-public class RecordPresenter implements RecordContract.Presenter {
-
-    public static String TAG = "RecordPresenter";
+public class RecordPresenter implements RecordContract.Presenter{
 
     private GpsProvider gpsProvider;
 
-    private RecordContract.View recordMvpView;
+    private RecordContract.View view;
     private Track track;
     private Location location;
 
     public RecordPresenter(RecordContract.View view) {
-        this.recordMvpView = view;
+        this.view = view;
         this.gpsProvider = new GpsProvider(this);
     }
 
     @Override
     public void attachView(RecordContract.View view) {
-        this.recordMvpView = view;
+        this.view = view;
     }
 
     @Override
     public void detachView() {
-        this.recordMvpView = null;
+        this.view = null;
     }
 
     public void postTrack(){
@@ -57,26 +54,26 @@ public class RecordPresenter implements RecordContract.Presenter {
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (response.isSuccessful()) {
                         track = response.body();
-                        recordMvpView.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
-                        Toast.makeText(recordMvpView.getContext(),
+                        view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
+                        Toast.makeText(view.getContext(),
                                 track.getId(),
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(recordMvpView.getContext(),
+                        Toast.makeText(view.getContext(),
                                 response.message(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    Toast.makeText(recordMvpView.getContext(),
+                    Toast.makeText(view.getContext(),
                             t.getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(recordMvpView.getContext(),
-                    recordMvpView.getContext().getResources().getString(R.string.noLocation),
+            Toast.makeText(view.getContext(),
+                    view.getContext().getResources().getString(R.string.noLocation),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -90,7 +87,7 @@ public class RecordPresenter implements RecordContract.Presenter {
                 @Override
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (response.isSuccessful()) {
-                        recordMvpView.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
+                        view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
                     } else {
                         Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
@@ -117,15 +114,17 @@ public class RecordPresenter implements RecordContract.Presenter {
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (response.isSuccessful()) {
                         track = response.body();
-                        recordMvpView.drawTrackOnMap(getLatLngLocations(track.getLocations()));
-                        Toast.makeText(recordMvpView.getContext(),
+                        view.drawTrackOnMap(getLatLngLocations(track.getLocations()));
+                        Toast.makeText(view.getContext(),
                                 "Tracked saved",
                                 Toast.LENGTH_SHORT).show();
+                        view.finishActivity();
+                        //TODO: move to track activity
                     }
                 }
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    Toast.makeText(recordMvpView.getContext(),
+                    Toast.makeText(view.getContext(),
                             t.getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
@@ -139,7 +138,7 @@ public class RecordPresenter implements RecordContract.Presenter {
     }
 
     public Context getContext(){
-        return recordMvpView.getContext();
+        return view.getContext();
     }
 
     private Location getLastLocation(){
@@ -154,7 +153,7 @@ public class RecordPresenter implements RecordContract.Presenter {
     private JConductorService getRestService(){
         return ServiceGenerator
                 .createService(JConductorService.class,
-                        SessionManager.getUsername(recordMvpView.getContext()),
-                        SessionManager.getPassword(recordMvpView.getContext()));
+                        SessionManager.getUsername(view.getContext()),
+                        SessionManager.getPassword(view.getContext()));
     }
 }

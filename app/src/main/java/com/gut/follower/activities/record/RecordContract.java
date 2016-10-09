@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.recordfragment;
+package com.gut.follower.activities.record;
 
 import android.content.Context;
 import android.location.Location;
@@ -11,10 +11,11 @@ import java.util.List;
 
 public interface RecordContract {
 
-    interface View extends BaseView {
+    interface View extends BaseView{
 
         void drawTrackOnMap(List<LatLng> locations);
 
+        void finishActivity();
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -28,6 +29,6 @@ public interface RecordContract {
         String getGpsStatus();
 
         Context getContext();
-    }
 
+    }
 }

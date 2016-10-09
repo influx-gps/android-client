@@ -6,13 +6,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.gut.follower.activities.mainactivity.recordfragment.RecordPresenter;
+import com.gut.follower.activities.mainactivity.startRecording.StartRecordingPresenter;
+import com.gut.follower.activities.record.RecordContract;
 
 public class GpsProvider implements LocationListener{
-    private RecordPresenter presenter;
+    private RecordContract.Presenter presenter;
     private LocationManager locationManager;
 
-    public GpsProvider(RecordPresenter presenter) {
+    public GpsProvider(RecordContract.Presenter presenter) {
         this.presenter = presenter;
         this.locationManager = getLocationManagerInstance();
     }

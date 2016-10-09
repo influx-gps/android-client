@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
 import com.gut.follower.activities.mainactivity.historyfragment.HistoryFragment;
-import com.gut.follower.activities.mainactivity.recordfragment.RecordFragment;
+import com.gut.follower.activities.mainactivity.startRecording.StartRecordingFragment;
 import com.gut.follower.activities.mainactivity.userPanelFragment.UserPanelFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 switch(menuItemId){
-                    case R.id.record_item:  commitFragment(new RecordFragment()); break;
+                    case R.id.record_item:  commitFragment(new StartRecordingFragment()); break;
                     case R.id.history_item: commitFragment(new HistoryFragment());break;
                     case R.id.profile_item: commitFragment(new UserPanelFragment());break;
                 }
