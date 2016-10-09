@@ -1,8 +1,8 @@
-package com.gut.follower.activities;
+package com.gut.follower.activities.loginactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +10,12 @@ import android.widget.TextView;
 
 import com.gut.follower.R;
 import com.gut.follower.utility.AuthenticationManager;
+import com.gut.follower.activities.BaseActivity;
+import com.gut.follower.activities.registeractivity.RegisterActivity;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginContract.View{
+
+    private LoginContract.Presenter mPresenter;
 
     private EditText username;
     private EditText password;
@@ -24,6 +28,9 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mPresenter = new LoginPresenter();
+        mPresenter.attachView(this);
+
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.login_btn);
@@ -33,7 +40,7 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AuthenticationManager(LoginActivity.this, username, password).login();
+                mPresenter.login(username.getText().toString(), password.getText().toString());
             }
         });
 
@@ -48,5 +55,20 @@ public class LoginActivity extends BaseActivity {
     private void goToRegisterActivity() {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showLoadingSpinner() {
+        
+    }
+
+    @Override
+    public void hideUserLoginForm() {
+
     }
 }

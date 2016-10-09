@@ -3,9 +3,11 @@ package com.gut.follower.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.gut.follower.activities.loginactivity.LoginActivity;
 import com.gut.follower.utility.SessionManager;
+import com.gut.follower.activities.mainactivity.MainActivity;
 
-public class SplashActivity extends BaseActivity{
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

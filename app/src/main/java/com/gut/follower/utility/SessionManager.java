@@ -23,4 +23,12 @@ public class SessionManager {
         userCredentials.clearPassword();
         userCredentials.clearUsername();
     }
+
+    public static String getUsername(Context context){
+        return new UserCredentials(context).getUsername();
+    }
+
+    public static String getPassword(Context context){
+        return new UserCredentials(context).getPassword();
+    }
 }

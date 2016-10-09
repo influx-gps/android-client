@@ -1,7 +1,7 @@
-package com.gut.follower.activities;
+package com.gut.follower.activities.registeractivity;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,15 +10,16 @@ import com.gut.follower.R;
 import com.gut.follower.utility.AuthenticationManager;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
+import com.gut.follower.activities.BaseActivity;
 
-public class RegisterActivity extends BaseActivity{
+public class RegisterActivity extends BaseActivity implements RegisterContract.View{
+
+    private RegisterContract.Presenter mPresenter;
 
     private EditText email;
     private EditText username;
     private EditText password;
     private Button registerBtn;
-
-    private JConductorService jConductorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,11 @@ public class RegisterActivity extends BaseActivity{
         setContentView(R.layout.activity_register);
 
         initView();
-        jConductorService = ServiceGenerator.createService(JConductorService.class);
     }
 
     private void initView() {
+        mPresenter = new RegisterPresenter();
+        mPresenter.attachView(this);
         email = (EditText) findViewById(R.id.email);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -37,9 +39,15 @@ public class RegisterActivity extends BaseActivity{
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AuthenticationManager(RegisterActivity.this, username, password, email)
-                        .register();
+                mPresenter.register(username.getText().toString(),
+                        password.getText().toString(),
+                        email.getText().toString());
             }
         });
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.gut.follower.activities.loginactivity.LoginActivity;
+import com.gut.follower.activities.mainactivity.MainActivity;
 import com.gut.follower.utility.SessionManager;
 
 public class BaseActivity extends AppCompatActivity{
