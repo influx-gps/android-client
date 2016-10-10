@@ -1,9 +1,9 @@
-package com.gut.follower.activities.loginactivity;
+package com.gut.follower.activities.register;
 
 import com.gut.follower.model.Account;
+import com.gut.follower.utility.AuthenticationManager;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
-import com.gut.follower.utility.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,12 +12,12 @@ import retrofit2.Response;
 import static com.gut.follower.commons.InputValidator.checkIfUserCredentialsNotEmpty;
 import static com.gut.follower.commons.InputValidator.createAccount;
 
-public class LoginPresenter implements LoginContract.Presenter{
+public class RegisterPresenter implements RegisterContract.Presenter{
 
-    private LoginContract.View view;
+    private RegisterContract.View view;
 
     @Override
-    public void attachView(LoginContract.View view) {
+    public void attachView(RegisterContract.View view) {
         this.view = view;
     }
 
@@ -27,35 +27,32 @@ public class LoginPresenter implements LoginContract.Presenter{
     }
 
     @Override
-    public void login(final String username, final String password) {
-        if(checkIfUserCredentialsNotEmpty(username, password)){
-            view.hideUserLoginForm();
-            view.showLoadingSpinner();
+    public void register(final String username, final String password, String email) {
+        if(checkIfUserCredentialsNotEmpty(username, password, email)){
             view.hideKeyboard();
+            view.showLoadingSpinner();
+            view.hideUserRegisterForm();
+            Account account = createAccount(username, password, email);
             JConductorService restApi = ServiceGenerator.createService(JConductorService.class);
-            Call<Account> call = restApi.login(createAccount(username, password));
+            Call<Account> call = restApi.register(account);
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
                     if (response.isSuccessful()) {
-                        SessionManager.saveUserCredentials(view.getContext(), username, password);
-                        view.startMainActivity();
+                        AuthenticationManager.login(view.getContext(), username, password);
                     } else {
-                        view.hideLoadingSpinner();
-                        view.showUserLoginForm();
                         view.showToast(response.message());
+                        view.hideLoadingSpinner();
+                        view.showUserRegisterForm();
                     }
                 }
                 @Override
                 public void onFailure(Call<Account> call, Throwable t) {
                     view.showToast(t.getMessage());
                     view.hideLoadingSpinner();
-                    view.showUserLoginForm();
+                    view.showUserRegisterForm();
                 }
             });
-        }
-        else {
-            view.showToast("User credentials can not be empty");
         }
     }
 }

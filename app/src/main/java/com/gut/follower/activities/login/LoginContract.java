@@ -1,27 +1,29 @@
-package com.gut.follower.activities.registeractivity;
+package com.gut.follower.activities.login;
 
 import com.gut.follower.activities.BasePresenter;
 import com.gut.follower.activities.BaseView;
 
-public interface RegisterContract {
+public interface LoginContract {
 
     interface View extends BaseView{
         void showLoadingSpinner();
 
         void hideLoadingSpinner();
 
-        void hideUserRegisterForm();
+        void hideUserLoginForm();
 
-        void showUserRegisterForm();
+        void showUserLoginForm();
 
         void showToast(String message);
+
+        void startMainActivity();
 
         void hideKeyboard();
     }
 
     interface Presenter extends BasePresenter<View>{
-        void register(String username, String password, String email);
+
+        void login(String username, String password);
+
     }
-
 }
-

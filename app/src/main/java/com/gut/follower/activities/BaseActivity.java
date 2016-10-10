@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.gut.follower.activities.loginactivity.LoginActivity;
-import com.gut.follower.activities.mainactivity.MainActivity;
+import com.gut.follower.activities.login.LoginActivity;
+import com.gut.follower.activities.main.MainActivity;
 import com.gut.follower.utility.SessionManager;
 
 public class BaseActivity extends AppCompatActivity{

@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.userPanelFragment;
+package com.gut.follower.activities.main.userPanel;
 
 import com.gut.follower.utility.AuthenticationManager;
 

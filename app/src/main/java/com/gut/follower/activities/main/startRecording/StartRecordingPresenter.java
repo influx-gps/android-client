@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.startRecording;
+package com.gut.follower.activities.main.startRecording;
 
 public class StartRecordingPresenter implements StartRecordingContract.Presenter {
 

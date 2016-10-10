@@ -21,11 +21,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.loginactivity.LoginActivity"
+            android:name=".activities.login.LoginActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.mainactivity.MainActivity"
+            android:name=".activities.main.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -37,10 +37,11 @@
             android:value="AIzaSyD4GZsErcOopCqw7zHZNr-2qLqy6y_gJ_s" />
 
         <activity
-            android:name=".activities.registeractivity.RegisterActivity"
+            android:name=".activities.register.RegisterActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.record.RecordActivity"></activity>
+        <activity android:name=".activities.record.RecordActivity" />
+        <activity android:name=".activities.track.TrackActivity"></activity>
     </application>
 
 </manifest>

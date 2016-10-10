@@ -7,4 +7,10 @@
     <string name="history">History</string>
     <string name="profile">Profile</string>
     <string name="noLocation">No location provided by gps</string>
+    <string name="distance">Distance: </string>
+    <string name="km">km</string>
+    <string name="avg_speed">Avg. Speed: </string>
+    <string name="km_h">km/h</string>
+    <string name="time">Time: </string>
+    <string name="no_tracks">No tracks saved so far... :(</string>
 </resources>

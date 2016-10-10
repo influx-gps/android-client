@@ -1,4 +1,4 @@
-package com.gut.follower.activities.registeractivity;
+package com.gut.follower.activities.register;
 
 import android.content.Context;
 import android.os.Bundle;

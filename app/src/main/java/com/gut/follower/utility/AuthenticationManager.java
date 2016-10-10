@@ -2,12 +2,10 @@ package com.gut.follower.utility;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gut.follower.activities.loginactivity.LoginActivity;
-import com.gut.follower.activities.mainactivity.MainActivity;
+import com.gut.follower.activities.login.LoginActivity;
+import com.gut.follower.activities.main.MainActivity;
 import com.gut.follower.model.Account;
 
 import retrofit2.Call;

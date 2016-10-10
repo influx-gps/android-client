@@ -1,6 +1,5 @@
-package com.gut.follower.activities.mainactivity.historyfragment;
+package com.gut.follower.activities.main.history;
 
-import com.gut.follower.adapters.TrackListAdapter;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;

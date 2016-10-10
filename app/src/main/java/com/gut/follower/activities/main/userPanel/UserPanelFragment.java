@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.userPanelFragment;
+package com.gut.follower.activities.main.userPanel;
 
 
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.gut.follower.R;
-import com.gut.follower.utility.AuthenticationManager;
 
 /**
  * A simple {@link Fragment} subclass.

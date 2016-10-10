@@ -1,13 +1,14 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.mainactivity.startRecording.StartRecordingFragment">
+    android:orientation="vertical"
+    tools:context=".activities.main.startRecording.StartRecordingFragment">
 
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <RelativeLayout
@@ -45,4 +46,4 @@
     </RelativeLayout>
 
 
-</FrameLayout>
+</LinearLayout>

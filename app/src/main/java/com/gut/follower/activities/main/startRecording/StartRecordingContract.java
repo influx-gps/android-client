@@ -1,4 +1,4 @@
-package com.gut.follower.activities.mainactivity.startRecording;
+package com.gut.follower.activities.main.startRecording;
 
 import com.gut.follower.activities.BasePresenter;
 import com.gut.follower.activities.BaseView;

@@ -3,9 +3,9 @@ package com.gut.follower.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.gut.follower.activities.loginactivity.LoginActivity;
+import com.gut.follower.activities.login.LoginActivity;
 import com.gut.follower.utility.SessionManager;
-import com.gut.follower.activities.mainactivity.MainActivity;
+import com.gut.follower.activities.main.MainActivity;
 
 public class SplashActivity extends BaseActivity {
 

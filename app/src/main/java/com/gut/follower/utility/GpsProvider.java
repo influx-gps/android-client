@@ -6,7 +6,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.gut.follower.activities.mainactivity.startRecording.StartRecordingPresenter;
 import com.gut.follower.activities.record.RecordContract;
 
 public class GpsProvider implements LocationListener{
