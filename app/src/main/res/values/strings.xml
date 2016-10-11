@@ -13,4 +13,7 @@
     <string name="km_h">km/h</string>
     <string name="time">Time: </string>
     <string name="no_tracks">No tracks saved so far... :(</string>
+    <string name="normal">Normal</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
 </resources>

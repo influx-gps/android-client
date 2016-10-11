@@ -16,6 +16,8 @@ public interface RecordContract {
         void drawTrackOnMap(List<LatLng> locations);
 
         void finishActivity();
+
+        void startTrackActivity(String id);
     }
 
     interface Presenter extends BasePresenter<View>{

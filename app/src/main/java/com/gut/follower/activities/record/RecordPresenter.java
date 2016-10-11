@@ -118,8 +118,8 @@ public class RecordPresenter implements RecordContract.Presenter{
                         Toast.makeText(view.getContext(),
                                 "Tracked saved",
                                 Toast.LENGTH_SHORT).show();
+                        view.startTrackActivity(track.getId());
                         view.finishActivity();
-                        //TODO: move to track activity
                     }
                 }
                 @Override

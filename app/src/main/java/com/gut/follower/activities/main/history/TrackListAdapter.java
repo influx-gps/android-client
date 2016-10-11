@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.gut.follower.R;
 import com.gut.follower.activities.track.TrackActivity;
 import com.gut.follower.model.Track;
+import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.MyVi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, TrackActivity.class);
-                intent.putExtra("trackId", track.getId());
+                intent.putExtra(ApplicationConstants.BUNDLE_TRACK_ID, track.getId());
                 mContext.startActivity(intent);
             }
         });

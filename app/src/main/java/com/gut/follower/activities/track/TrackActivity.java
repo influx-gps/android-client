@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +30,10 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     private GoogleMap map;
     private PolylineOptions options;
 
+    private TextView mNormalMap;
+    private TextView mSatelliteMap;
+    private TextView mTerrainMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,28 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         options = new PolylineOptions()
                 .color(Color.BLUE)
                 .width(7f);
+        mNormalMap = (TextView)findViewById(R.id.normal);
+        mSatelliteMap = (TextView)findViewById(R.id.satellite);
+        mTerrainMap = (TextView)findViewById(R.id.terrain);
+        mNormalMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            }
+        });
+
+        mSatelliteMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            }
+        });
+        mTerrainMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            }
+        });
     }
 
     @Override
