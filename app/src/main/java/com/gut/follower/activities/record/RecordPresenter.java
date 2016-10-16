@@ -55,6 +55,7 @@ public class RecordPresenter implements RecordContract.Presenter{
                     if (response.isSuccessful()) {
                         track = response.body();
                         view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
+                        view.setDistance(response.body().getDistance());
                         Toast.makeText(view.getContext(),
                                 track.getId(),
                                 Toast.LENGTH_SHORT).show();
@@ -88,6 +89,7 @@ public class RecordPresenter implements RecordContract.Presenter{
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (response.isSuccessful()) {
                         view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
+                        view.setDistance(response.body().getDistance());
                     } else {
                         Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }

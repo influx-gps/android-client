@@ -37,6 +37,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     private Polyline polyline;
     private GoogleMap map;
     private Button mStopButton;
+    private TextView distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     private void initViewVariables() {
         mPresenter = new RecordPresenter(this);
         mStopButton = (Button)findViewById(R.id.stop_recording);
+        distance = (TextView)findViewById(R.id.distance);
         options = new PolylineOptions()
                 .color(Color.BLUE)
                 .width(5f);
@@ -137,6 +139,13 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
         Intent intent = new Intent(getApplicationContext(), TrackActivity.class);
         intent.putExtra(ApplicationConstants.BUNDLE_TRACK_ID, id);
         startActivity(intent);
+    }
+
+    @Override
+    public void setDistance(Double distance) {
+        if (distance != null) {
+            this.distance.setText(String.format("%.2f", distance));
+        }
     }
 
     private void stopRecording() {

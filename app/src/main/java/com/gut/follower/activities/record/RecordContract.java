@@ -18,6 +18,8 @@ public interface RecordContract {
         void finishActivity();
 
         void startTrackActivity(String id);
+
+        void setDistance(Double distance);
     }
 
     interface Presenter extends BasePresenter<View>{

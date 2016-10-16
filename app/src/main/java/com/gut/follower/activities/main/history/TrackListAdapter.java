@@ -38,7 +38,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Track track = trackList.get(position);
-        holder.trackDistance.setText("4.35");
+        holder.trackDistance.setText(String.format("%.2f", track.getDistance()));
         holder.trackAvgSpeed.setText("15.4");
         holder.trackDuration.setText("56 : 34");
         holder.activityType.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_directions_bike_black_48dp));
