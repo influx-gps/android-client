@@ -3,6 +3,8 @@ package com.gut.follower.activities.main.startRecording;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,7 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.gut.follower.R;
 import com.gut.follower.activities.record.RecordActivity;
+import com.gut.follower.utility.ApplicationConstants;
 
 
 public class StartRecordingFragment extends Fragment implements StartRecordingContract.View, OnMapReadyCallback {
@@ -30,8 +34,9 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
 
     private GoogleMap map;
 
-    private TextView gpsStatusText;
     private Button startButton;
+    private ImageButton runMode;
+    private ImageButton bikeMode;
 
     public StartRecordingFragment() {}
 
@@ -45,6 +50,7 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
         mapFragment.getMapAsync(this);
 
         initFragmentVariables(view);
+        setRunMode();
 
         return view;
     }
@@ -54,16 +60,32 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
         mPresenter = new StartRecordingPresenter();
         mPresenter.attachView(this);
 
-        gpsStatusText = (TextView) view.findViewById(R.id.gpsStatus_text);
+        runMode = (ImageButton)view.findViewById(R.id.run_mode);
+        bikeMode = (ImageButton)view.findViewById(R.id.bike_mode);
         startButton = (Button) view.findViewById(R.id.start_button);
-        gpsStatusText.setText(String.valueOf(getGpsStatus()));
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startRecording();
+                mPresenter.startRecording();
             }
         });
+        runMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.setMode(ApplicationConstants.RUN_MODE);
+            }
+        });
+        bikeMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.setMode(ApplicationConstants.BIKE_MODE);
+            }
+        });
+    }
+
+    private void setRunMode() {
+        mPresenter.setMode(ApplicationConstants.RUN_MODE);
     }
 
     @Override
@@ -72,13 +94,27 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
         super.onDestroy();
     }
 
-    private void startRecording() {
+    @Override
+    public void startRecordingActivity(String mode) {
         if (getGpsStatus()) {
             Intent intent = new Intent(getContext(), RecordActivity.class);
+            intent.putExtra(mode, ApplicationConstants.BUNDLE_MODE);
             startActivity(intent);
         } else {
             Toast.makeText(getContext(), "Turn on gps", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void selectRunMode() {
+        runMode.getBackground().setColorFilter(getResources().getColor(R.color.red_light), PorterDuff.Mode.SRC_ATOP);
+        bikeMode.getBackground().setColorFilter(getResources().getColor(R.color.grey_light), PorterDuff.Mode.SRC_ATOP);
+    }
+
+    @Override
+    public void selectBikeMode() {
+        runMode.getBackground().setColorFilter(getResources().getColor(R.color.grey_light), PorterDuff.Mode.SRC_ATOP);
+        bikeMode.getBackground().setColorFilter(getResources().getColor(R.color.red_light), PorterDuff.Mode.SRC_ATOP);
     }
 
     @Override

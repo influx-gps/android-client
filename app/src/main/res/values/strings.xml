@@ -16,4 +16,5 @@
     <string name="normal">Normal</string>
     <string name="satellite">Satellite</string>
     <string name="terrain">Terrain</string>
+    <string name="start_recording">Start</string>
 </resources>
