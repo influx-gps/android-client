@@ -9,6 +9,8 @@ public class Track {
 
     private String accountId;
 
+    private String activity;
+
     private boolean finished;
 
     private Double avgSpeed;
@@ -20,6 +22,14 @@ public class Track {
     private long startTime;
 
     private long finishTime;
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
 
     public long getStartTime() {
         return startTime;

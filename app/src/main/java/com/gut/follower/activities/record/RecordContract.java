@@ -20,17 +20,17 @@ public interface RecordContract {
         void startTrackActivity(String id);
 
         void setDistance(Double distance);
+
+        void startStopper();
     }
 
     interface Presenter extends BasePresenter<View>{
 
-        void postTrack();
+        void postTrack(String activity);
 
         void postLocation(Location location);
 
         void endTrack();
-
-        String getGpsStatus();
 
         Context getContext();
 

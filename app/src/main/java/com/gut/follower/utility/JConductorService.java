@@ -31,7 +31,8 @@ public interface JConductorService {
     Call<List<Track>> getTracks();
 
     @POST("/rest/track")
-    Call<Track> postTrack(@Body GutLocation location);
+    Call<Track> postTrack(@Body GutLocation location,
+                          @Query("activity") String activity);
 
     @POST("/rest/track/{id}")
     Call<Track> postLocation( @Path("id") String id,

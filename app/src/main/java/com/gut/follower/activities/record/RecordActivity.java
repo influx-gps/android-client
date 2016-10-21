@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -38,6 +39,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     private GoogleMap map;
     private Button mStopButton;
     private TextView distance;
+    private Chronometer mChronometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
         mapFragment.getMapAsync(this);
 
         initViewVariables();
-        startRecording();
+        startRecording(getIntent().getExtras().getString(ApplicationConstants.BUNDLE_MODE));
     }
 
     private void initViewVariables() {
@@ -65,6 +67,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
                 stopRecording();
             }
         });
+        mChronometer = (Chronometer)findViewById(R.id.chronometer);
     }
 
     @Override
@@ -143,16 +146,19 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
 
     @Override
     public void setDistance(Double distance) {
-        if (distance != null) {
-            this.distance.setText(String.format("%.2f", distance));
-        }
+        this.distance.setText(String.format("%.2f", distance));
+    }
+
+    @Override
+    public void startStopper() {
+        mChronometer.start();
     }
 
     private void stopRecording() {
         mPresenter.endTrack();
     }
 
-    private void startRecording() {
-        mPresenter.postTrack();
+    private void startRecording(String activity) {
+        mPresenter.postTrack(activity);
     }
 }

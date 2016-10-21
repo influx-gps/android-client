@@ -43,12 +43,12 @@ public class RecordPresenter implements RecordContract.Presenter{
         this.view = null;
     }
 
-    public void postTrack(){
+    public void postTrack(String activity){
         gpsProvider.start();
         location = getLastLocation();
         if (location != null) {
             JConductorService jConductorService = getRestService();
-            Call<Track> call = jConductorService.postTrack(getGutLocation(location));
+            Call<Track> call = jConductorService.postTrack(getGutLocation(location), activity);
             call.enqueue(new Callback<Track>() {
                 @Override
                 public void onResponse(Call<Track> call, Response<Track> response) {
@@ -56,9 +56,7 @@ public class RecordPresenter implements RecordContract.Presenter{
                         track = response.body();
                         view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
                         view.setDistance(response.body().getDistance());
-                        Toast.makeText(view.getContext(),
-                                track.getId(),
-                                Toast.LENGTH_SHORT).show();
+                        view.startStopper();
                     } else {
                         Toast.makeText(view.getContext(),
                                 response.message(),

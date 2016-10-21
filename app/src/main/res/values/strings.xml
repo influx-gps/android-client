@@ -17,4 +17,5 @@
     <string name="satellite">Satellite</string>
     <string name="terrain">Terrain</string>
     <string name="start_recording">Start</string>
+    <string name="stop">Stop</string>
 </resources>

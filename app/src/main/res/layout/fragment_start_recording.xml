@@ -2,82 +2,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="7"
     android:orientation="vertical"
     tools:context=".activities.main.startRecording.StartRecordingFragment">
 
     <fragment
         android:id="@+id/map"
+        android:layout_weight="5"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:weightSum="2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_alignParentTop="true"
-            android:layout_above="@+id/start_button"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:layout_weight="1"
+            <ImageButton
                 android:layout_gravity="center"
                 android:clickable="true"
+                android:id="@+id/run_mode"
+                android:background="@drawable/ic_directions_run_black_48dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
-                <ImageButton
-                    android:layout_gravity="center"
-                    android:clickable="true"
-                    android:id="@+id/run_mode"
-                    android:background="@drawable/ic_directions_run_black_48dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </FrameLayout>
+        </FrameLayout>
 
 
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@color/grey"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"/>
+        <View
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/grey"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
 
-            <FrameLayout
-                android:layout_weight="1"
-                android:layout_gravity="center"
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/bike_mode"
                 android:clickable="true"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_directions_bike_black_48dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
-                <ImageButton
-                    android:id="@+id/bike_mode"
-                    android:clickable="true"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_directions_bike_black_48dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+        </FrameLayout>
 
-            </FrameLayout>
+    </LinearLayout>
 
-        </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_recording"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:id="@+id/start_button"
-            android:enabled="true"
-            android:focusable="true"
-            android:layout_alignParentBottom="true" />
-
-    </RelativeLayout>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/start_recording"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:id="@+id/start_button"
+        android:enabled="true"
+        android:focusable="true" />
 
 </LinearLayout>
