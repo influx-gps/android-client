@@ -6,58 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".activities.track.TrackActivity">
 
-    <fragment
-        android:id="@+id/map"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        class="com.google.android.gms.maps.SupportMapFragment" />
+        android:layout_height="300dp">
 
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:weightSum="3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:id="@+id/normal"
-            android:text="@string/normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fab_menu"
+            android:layout_gravity="right|bottom"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
 
-        <View
-            android:background="@color/colorPrimary"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"/>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/normal_mode"
+                fab:fab_title="@string/normal"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_map_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:id="@+id/satellite"
-            android:text="@string/satellite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/satellite_mode"
+                fab:fab_title="@string/satellite"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_satellite_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <View
-            android:background="@color/colorPrimary"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"/>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/terrain_mode"
+                fab:fab_title="@string/terrain"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_terrain_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:id="@+id/terrain"
-            android:text="@string/terrain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

@@ -6,12 +6,52 @@
     android:orientation="vertical"
     tools:context=".activities.main.startRecording.StartRecordingFragment">
 
-    <fragment
-        android:id="@+id/map"
+    <FrameLayout
         android:layout_weight="5"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        class="com.google.android.gms.maps.SupportMapFragment" />
+        android:layout_height="300dp">
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fab_menu"
+            android:layout_gravity="right|bottom"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/normal_mode"
+                fab:fab_title="@string/normal"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_map_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/satellite_mode"
+                fab:fab_title="@string/satellite"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_satellite_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/terrain_mode"
+                fab:fab_title="@string/terrain"
+                fab:fab_size="mini"
+                fab:fab_icon="@drawable/ic_terrain_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    </FrameLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -69,6 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/start_recording"
+        android:background="@color/green"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:id="@+id/start_button"
         android:enabled="true"

@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,7 +31,7 @@ import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
 
-public class RecordActivity extends BaseActivity implements RecordContract.View, OnMapReadyCallback{
+public class RecordActivity extends BaseActivity implements RecordContract.View, OnMapReadyCallback, View.OnClickListener{
 
     private RecordContract.Presenter mPresenter;
 
@@ -40,6 +42,11 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     private Button mStopButton;
     private TextView distance;
     private Chronometer mChronometer;
+
+    private FloatingActionsMenu fabMenu;
+    private FloatingActionButton terrain;
+    private FloatingActionButton normal;
+    private FloatingActionButton satellite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +68,16 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
         options = new PolylineOptions()
                 .color(Color.BLUE)
                 .width(5f);
-        mStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopRecording();
-            }
-        });
         mChronometer = (Chronometer)findViewById(R.id.chronometer);
+        fabMenu = (FloatingActionsMenu)findViewById(R.id.fab_menu);
+        normal = (FloatingActionButton)findViewById(R.id.normal_mode);
+        terrain = (FloatingActionButton)findViewById(R.id.terrain_mode);
+        satellite = (FloatingActionButton)findViewById(R.id.satellite_mode);
+
+        mStopButton.setOnClickListener(this);
+        normal.setOnClickListener(this);
+        terrain.setOnClickListener(this);
+        satellite.setOnClickListener(this);
     }
 
     @Override
@@ -160,5 +170,26 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
 
     private void startRecording(String activity) {
         mPresenter.postTrack(activity);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.stop_recording:
+                stopRecording();
+                break;
+            case R.id.normal_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                fabMenu.collapse();
+                break;
+            case R.id.terrain_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                fabMenu.collapse();
+                break;
+            case R.id.satellite_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                fabMenu.collapse();
+                break;
+        }
     }
 }

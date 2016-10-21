@@ -3,7 +3,6 @@ package com.gut.follower.activities.main.startRecording;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,7 +28,8 @@ import com.gut.follower.activities.record.RecordActivity;
 import com.gut.follower.utility.ApplicationConstants;
 
 
-public class StartRecordingFragment extends Fragment implements StartRecordingContract.View, OnMapReadyCallback {
+public class StartRecordingFragment extends Fragment implements StartRecordingContract.View,
+        OnMapReadyCallback, View.OnClickListener {
 
     private StartRecordingContract.Presenter mPresenter;
 
@@ -37,8 +38,13 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
     private Button startButton;
     private ImageButton runMode;
     private ImageButton bikeMode;
+    private FloatingActionsMenu fabMenu;
+    private FloatingActionButton terrain;
+    private FloatingActionButton normal;
+    private FloatingActionButton satellite;
 
-    public StartRecordingFragment() {}
+    public StartRecordingFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,28 +66,21 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
         mPresenter = new StartRecordingPresenter();
         mPresenter.attachView(this);
 
-        runMode = (ImageButton)view.findViewById(R.id.run_mode);
-        bikeMode = (ImageButton)view.findViewById(R.id.bike_mode);
+        fabMenu = (FloatingActionsMenu) view.findViewById(R.id.fab_menu);
+        normal = (FloatingActionButton) view.findViewById(R.id.normal_mode);
+        terrain = (FloatingActionButton) view.findViewById(R.id.terrain_mode);
+        satellite = (FloatingActionButton) view.findViewById(R.id.satellite_mode);
+
+        runMode = (ImageButton) view.findViewById(R.id.run_mode);
+        bikeMode = (ImageButton) view.findViewById(R.id.bike_mode);
         startButton = (Button) view.findViewById(R.id.start_button);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.startRecording();
-            }
-        });
-        runMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.setMode(ApplicationConstants.RUN_MODE);
-            }
-        });
-        bikeMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.setMode(ApplicationConstants.BIKE_MODE);
-            }
-        });
+        startButton.setOnClickListener(this);
+        runMode.setOnClickListener(this);
+        bikeMode.setOnClickListener(this);
+        normal.setOnClickListener(this);
+        terrain.setOnClickListener(this);
+        satellite.setOnClickListener(this);
     }
 
     private void setRunMode() {
@@ -129,17 +128,44 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
                 locationManager
                         .getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
-        if(location != null){
+        if (location != null) {
             map.moveCamera(
                     CameraUpdateFactory
                             .newLatLngZoom(new LatLng(location.getLatitude(),
-                                                      location.getLongitude()),
-                                                      15));
+                                            location.getLongitude()),
+                                    15));
         }
     }
 
     public boolean getGpsStatus() {
-        LocationManager lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.run_mode:
+                mPresenter.setMode(ApplicationConstants.RUN_MODE);
+                break;
+            case R.id.bike_mode:
+                mPresenter.setMode(ApplicationConstants.BIKE_MODE);
+                break;
+            case R.id.normal_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                fabMenu.collapse();
+                break;
+            case R.id.terrain_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                fabMenu.collapse();
+                break;
+            case R.id.satellite_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                fabMenu.collapse();
+                break;
+            case R.id.start_button:
+                mPresenter.startRecording();
+                break;
+        }
     }
 }

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,19 +22,21 @@ import com.gut.follower.activities.BaseActivity;
 import com.gut.follower.activities.record.RecordPresenter;
 import com.gut.follower.commons.LocationConverter;
 import com.gut.follower.model.Track;
+import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
 
-public class TrackActivity extends BaseActivity implements TrackContract.View, OnMapReadyCallback {
+public class TrackActivity extends BaseActivity implements TrackContract.View, OnMapReadyCallback, View.OnClickListener {
 
     private TrackContract.Presenter mPresenter;
 
     private GoogleMap map;
     private PolylineOptions options;
 
-    private TextView mNormalMap;
-    private TextView mSatelliteMap;
-    private TextView mTerrainMap;
+    private FloatingActionsMenu fabMenu;
+    private FloatingActionButton terrain;
+    private FloatingActionButton normal;
+    private FloatingActionButton satellite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +59,15 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         options = new PolylineOptions()
                 .color(Color.BLUE)
                 .width(7f);
-        mNormalMap = (TextView)findViewById(R.id.normal);
-        mSatelliteMap = (TextView)findViewById(R.id.satellite);
-        mTerrainMap = (TextView)findViewById(R.id.terrain);
-        mNormalMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            }
-        });
 
-        mSatelliteMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            }
-        });
-        mTerrainMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-            }
-        });
+        fabMenu = (FloatingActionsMenu)findViewById(R.id.fab_menu);
+        normal = (FloatingActionButton)findViewById(R.id.normal_mode);
+        terrain = (FloatingActionButton)findViewById(R.id.terrain_mode);
+        satellite = (FloatingActionButton)findViewById(R.id.satellite_mode);
+
+        normal.setOnClickListener(this);
+        terrain.setOnClickListener(this);
+        satellite.setOnClickListener(this);
     }
 
     @Override
@@ -112,5 +103,23 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.normal_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                fabMenu.collapse();
+                break;
+            case R.id.terrain_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                fabMenu.collapse();
+                break;
+            case R.id.satellite_mode:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                fabMenu.collapse();
+                break;
+        }
     }
 }
