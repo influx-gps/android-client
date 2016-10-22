@@ -22,6 +22,8 @@ public interface RecordContract {
         void setDistance(Double distance);
 
         void startStopper();
+
+        void showToast(String message);
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -31,8 +33,6 @@ public interface RecordContract {
         void postLocation(Location location);
 
         void endTrack();
-
-        Context getContext();
 
     }
 }

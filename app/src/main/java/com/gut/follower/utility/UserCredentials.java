@@ -3,6 +3,8 @@ package com.gut.follower.utility;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.gut.follower.GutFollower;
+
 public class UserCredentials {
 
     private static final String PREF_NAME = "GutFollower";
@@ -13,8 +15,8 @@ public class UserCredentials {
 
     private SharedPreferences sharedPreferences;
 
-    public UserCredentials(Context context) {
-        this.sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+    public UserCredentials() {
+        this.sharedPreferences = GutFollower.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
     }
 
     public void setUsername(String username){

@@ -61,11 +61,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void showLoadingSpinner() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
@@ -93,12 +88,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
 
     @Override
     public void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void startMainActivity() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 

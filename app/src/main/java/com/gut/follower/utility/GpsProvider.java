@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.gut.follower.GutFollower;
 import com.gut.follower.activities.record.RecordContract;
 
 public class GpsProvider implements LocationListener{
@@ -18,9 +19,7 @@ public class GpsProvider implements LocationListener{
     }
 
     private LocationManager getLocationManagerInstance(){
-        return (LocationManager) presenter
-                .getContext()
-                .getSystemService(Context.LOCATION_SERVICE);
+        return (LocationManager) GutFollower.context.getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void start(){

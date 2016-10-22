@@ -19,7 +19,7 @@ public class BaseActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         if(this instanceof LoginActivity){
-            if(SessionManager.isUserLoggedIn(getApplicationContext())){
+            if(SessionManager.isUserLoggedIn()){
                 startNewActivity(MainActivity.class);
             }
         }

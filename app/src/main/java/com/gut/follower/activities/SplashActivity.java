@@ -13,7 +13,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(SessionManager.isUserLoggedIn(getApplicationContext())){
+        if(SessionManager.isUserLoggedIn()){
             startNewActivity(MainActivity.class);
         } else {
             startNewActivity(LoginActivity.class);

@@ -17,8 +17,8 @@ public class TrackPresenter implements TrackContract.Presenter{
     public void loadTrack(String trackId) {
         JConductorService restApi = ServiceGenerator
                 .createService(JConductorService.class,
-                        SessionManager.getUsername(view.getContext()),
-                        SessionManager.getPassword(view.getContext()));
+                        SessionManager.getUsername(),
+                        SessionManager.getPassword());
         Call<Track> call = restApi.getTrack(trackId);
         call.enqueue(new Callback<Track>() {
             @Override
@@ -35,6 +35,11 @@ public class TrackPresenter implements TrackContract.Presenter{
 
             }
         });
+    }
+
+    @Override
+    public void start() {
+
     }
 
     @Override

@@ -17,6 +17,11 @@ public class RegisterPresenter implements RegisterContract.Presenter{
     private RegisterContract.View view;
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void attachView(RegisterContract.View view) {
         this.view = view;
     }
@@ -39,7 +44,7 @@ public class RegisterPresenter implements RegisterContract.Presenter{
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
                     if (response.isSuccessful()) {
-                        AuthenticationManager.login(view.getContext(), username, password);
+                        AuthenticationManager.login(username, password);
                     } else {
                         view.showToast(response.message());
                         view.hideLoadingSpinner();

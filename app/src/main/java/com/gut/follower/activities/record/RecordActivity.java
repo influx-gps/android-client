@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -81,11 +82,6 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMyLocationEnabled(true);
@@ -112,7 +108,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     }
 
     private void showAlertDialog() {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(getApplicationContext())
                 .setMessage("This will end recording your track. Are you sure?")
                 .setPositiveButton("End recording", new DialogInterface.OnClickListener() {
                     @Override
@@ -162,6 +158,11 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     @Override
     public void startStopper() {
         mChronometer.start();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void stopRecording() {

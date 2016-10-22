@@ -1,6 +1,5 @@
 package com.gut.follower.activities.register;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,11 +47,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void showLoadingSpinner() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
@@ -80,7 +74,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
     @Override
     public void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

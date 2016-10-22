@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     android:weightSum="14"
     tools:context=".activities.record.RecordActivity">
@@ -76,7 +77,7 @@
             <Chronometer
                 android:id="@+id/chronometer"
                 android:gravity="center"
-                android:textSize="60sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/grey_light"
                 android:layout_width="wrap_content"
@@ -108,7 +109,7 @@
             <TextView
                 android:id="@+id/distance"
                 android:textStyle="bold"
-                android:textSize="60sp"
+                android:textSize="40sp"
                 android:textColor="@color/grey_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -145,7 +146,7 @@
             <TextView
                 android:text="13.5"
                 android:textStyle="bold"
-                android:textSize="60sp"
+                android:textSize="40sp"
                 android:textColor="@color/grey_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -164,8 +165,9 @@
     <Button
         android:id="@+id/stop_recording"
         android:text="@string/stop"
+        android:textStyle="bold"
         android:layout_weight="1"
-        android:background="@color/red_light"
+        android:backgroundTint="@color/red_light"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

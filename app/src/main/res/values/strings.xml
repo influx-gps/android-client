@@ -3,6 +3,7 @@
     <string name="register"><u>Register</u></string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
+    <string name="delete_acc">Delete Account</string>
     <string name="record">Record</string>
     <string name="history">History</string>
     <string name="profile">Profile</string>
@@ -18,4 +19,14 @@
     <string name="terrain">Terrain</string>
     <string name="start_recording">Start</string>
     <string name="stop">Stop</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New Password</string>
+    <string name="empty_string" />
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit_password">Edit password</string>
+    <string name="edit_email">Edit email</string>
 </resources>

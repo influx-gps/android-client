@@ -10,6 +10,11 @@ public class StartRecordingPresenter implements StartRecordingContract.Presenter
     private String mode;
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void attachView(StartRecordingContract.View view) {
         this.view = view;
     }

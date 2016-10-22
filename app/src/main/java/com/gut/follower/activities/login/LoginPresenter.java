@@ -17,6 +17,11 @@ public class LoginPresenter implements LoginContract.Presenter{
     private LoginContract.View view;
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void attachView(LoginContract.View view) {
         this.view = view;
     }
@@ -38,7 +43,7 @@ public class LoginPresenter implements LoginContract.Presenter{
                 @Override
                 public void onResponse(Call<Account> call, Response<Account> response) {
                     if (response.isSuccessful()) {
-                        SessionManager.saveUserCredentials(view.getContext(), username, password);
+                        SessionManager.saveUserCredentials(username, password);
                         view.startMainActivity();
                     } else {
                         view.hideLoadingSpinner();

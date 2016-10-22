@@ -8,4 +8,5 @@
     <color name="red_light">#cfff1313</color>
     <color name="black_semi_transparent">#9e000000</color>
     <color name="green">#d62fc61f</color>
+    <color name="background">#eeeeee</color>
 </resources>

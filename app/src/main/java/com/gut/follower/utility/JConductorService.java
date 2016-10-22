@@ -38,4 +38,11 @@ public interface JConductorService {
     Call<Track> postLocation( @Path("id") String id,
                               @Body GutLocation location,
                               @Query("finished") boolean finished);
+
+    @POST("/rest/account")
+    Call<Account> postAccountInfo(@Body Account account);
+
+    @GET("/rest/account")
+    Call<Account> getAccointInfo();
+
 }

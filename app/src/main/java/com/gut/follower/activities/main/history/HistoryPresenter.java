@@ -21,8 +21,8 @@ public class HistoryPresenter implements HistoryContract.Presenter{
     public void loadTracks() {
         JConductorService service = ServiceGenerator
                 .createService(JConductorService.class,
-                        SessionManager.getUsername(view.getContext()),
-                        SessionManager.getPassword(view.getContext()));
+                        SessionManager.getUsername(),
+                        SessionManager.getPassword());
 
         Call<List<Track>> call = service.getTracks();
         call.enqueue(new Callback<List<Track>>() {
@@ -38,6 +38,11 @@ public class HistoryPresenter implements HistoryContract.Presenter{
 
             }
         });
+    }
+
+    @Override
+    public void start() {
+
     }
 
     @Override

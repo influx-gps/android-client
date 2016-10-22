@@ -3,9 +3,9 @@ package com.gut.follower.activities.record;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.widget.Toast;
 
+import com.gut.follower.GutFollower;
 import com.gut.follower.R;
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.GpsProvider;
@@ -34,6 +34,11 @@ public class RecordPresenter implements RecordContract.Presenter{
     }
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void attachView(RecordContract.View view) {
         this.view = view;
     }
@@ -58,22 +63,18 @@ public class RecordPresenter implements RecordContract.Presenter{
                         view.setDistance(response.body().getDistance());
                         view.startStopper();
                     } else {
-                        Toast.makeText(view.getContext(),
-                                response.message(),
-                                Toast.LENGTH_SHORT).show();
+                        view.showToast(response.message());
                     }
                 }
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    Toast.makeText(view.getContext(),
-                            t.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    view.finishActivity();
+                    view.showToast(t.getMessage());
                 }
             });
         } else {
-            Toast.makeText(view.getContext(),
-                    view.getContext().getResources().getString(R.string.noLocation),
-                    Toast.LENGTH_SHORT).show();
+            view.finishActivity();
+            view.showToast(GutFollower.context.getResources().getString(R.string.noLocation));
         }
     }
 
@@ -89,12 +90,12 @@ public class RecordPresenter implements RecordContract.Presenter{
                         view.drawTrackOnMap(getLatLngLocations(response.body().getLocations()));
                         view.setDistance(response.body().getDistance());
                     } else {
-                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        view.showToast(response.message());
                     }
                 }
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                   view.showToast(t.getMessage());
                 }
             });
         }
@@ -115,31 +116,18 @@ public class RecordPresenter implements RecordContract.Presenter{
                     if (response.isSuccessful()) {
                         track = response.body();
                         view.drawTrackOnMap(getLatLngLocations(track.getLocations()));
-                        Toast.makeText(view.getContext(),
-                                "Tracked saved",
-                                Toast.LENGTH_SHORT).show();
                         view.startTrackActivity(track.getId());
                         view.finishActivity();
                     }
                 }
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    Toast.makeText(view.getContext(),
-                            t.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    view.showToast(t.getMessage());
                 }
             });
         }
     }
 
-    public String getGpsStatus(){
-        return String.valueOf(
-                gpsProvider.getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER));
-    }
-
-    public Context getContext(){
-        return view.getContext();
-    }
 
     private Location getLastLocation(){
         return gpsProvider
@@ -153,7 +141,7 @@ public class RecordPresenter implements RecordContract.Presenter{
     private JConductorService getRestService(){
         return ServiceGenerator
                 .createService(JConductorService.class,
-                        SessionManager.getUsername(view.getContext()),
-                        SessionManager.getPassword(view.getContext()));
+                        SessionManager.getUsername(),
+                        SessionManager.getPassword());
     }
 }

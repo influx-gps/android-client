@@ -96,11 +96,6 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
     }
