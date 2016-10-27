@@ -1,11 +1,11 @@
 package com.gut.follower.activities.track;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -19,10 +19,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
-import com.gut.follower.activities.record.RecordPresenter;
 import com.gut.follower.commons.LocationConverter;
 import com.gut.follower.model.Track;
-import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
 
@@ -37,11 +35,20 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     private FloatingActionButton terrain;
     private FloatingActionButton normal;
     private FloatingActionButton satellite;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
+
+        // Create toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setTitle("12.06.2016");
+        }
+
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -51,6 +58,23 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
 
         String trackId = getIntent().getStringExtra("trackId");
         mPresenter.loadTrack(trackId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.track_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_delete:
+//                mPresenter.deleteTrack();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initViewVariables() {

@@ -29,4 +29,9 @@
     <string name="cancel">Cancel</string>
     <string name="edit_password">Edit password</string>
     <string name="edit_email">Edit email</string>
+    <string name="track_distance">Distance</string>
+    <string name="track_avg_speed">Avg. Speed</string>
+    <string name="track_time_duration">Time Duration</string>
+    <string name="track_max_speed">Max Speed</string>
+    <string name="delete">Delete Track</string>
 </resources>

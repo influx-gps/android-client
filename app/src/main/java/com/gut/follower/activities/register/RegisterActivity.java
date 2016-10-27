@@ -1,6 +1,7 @@
 package com.gut.follower.activities.register;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,11 +20,19 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     private EditText mPassword;
     private Button mRegisterBtn;
     private ProgressBar mProgressBar;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Create toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
 
         initView();
     }

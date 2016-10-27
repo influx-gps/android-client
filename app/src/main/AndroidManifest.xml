@@ -41,8 +41,12 @@
             android:name=".activities.register.RegisterActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.record.RecordActivity" />
-        <activity android:name=".activities.track.TrackActivity"></activity>
+        <activity
+            android:name=".activities.record.RecordActivity"
+            android:configChanges="orientation"/>
+        <activity
+            android:name=".activities.track.TrackActivity"
+            android:configChanges="orientation"/>
     </application>
 
 </manifest>

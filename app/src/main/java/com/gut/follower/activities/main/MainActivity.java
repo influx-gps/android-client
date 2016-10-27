@@ -3,6 +3,8 @@ package com.gut.follower.activities.main;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
@@ -16,11 +18,19 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 public class MainActivity extends BaseActivity {
 
     private BottomBar bottomBar;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
         bottomBar.setItems(R.menu.three_buttons_menu);
