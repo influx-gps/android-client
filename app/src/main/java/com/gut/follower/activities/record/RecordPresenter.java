@@ -1,9 +1,7 @@
 package com.gut.follower.activities.record;
 
-import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
-import android.widget.Toast;
 
 import com.gut.follower.GutFollower;
 import com.gut.follower.R;
@@ -64,6 +62,7 @@ public class RecordPresenter implements RecordContract.Presenter{
                         view.startStopper();
                     } else {
                         view.showToast(response.message());
+                        view.finishActivity();
                     }
                 }
                 @Override

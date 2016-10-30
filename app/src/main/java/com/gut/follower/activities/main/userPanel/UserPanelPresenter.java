@@ -68,7 +68,7 @@ public class UserPanelPresenter implements UserPanelContract.Presenter{
     @Override
     public void loadUserInfo() {
         JConductorService restApi = getRestService();
-        Call<Account> call = restApi.getAccointInfo();
+        Call<Account> call = restApi.getAccountInfo();
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {

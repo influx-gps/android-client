@@ -97,10 +97,10 @@ public class UserPanelFragment extends Fragment implements UserPanelContract.Vie
     private void setInputType() {
         if(mPassword.getInputType() == 129){
             mPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-            mShowPassword.setBackground(getResources().getDrawable(R.drawable.ic_visibility_off_black_36dp));
+            mShowPassword.setBackground(getResources().getDrawable(R.drawable.ic_visibility_off_black_24dp));
         } else {
             mPassword.setInputType(129);
-            mShowPassword.setBackground(getResources().getDrawable(R.drawable.ic_remove_red_eye_black_36dp));
+            mShowPassword.setBackground(getResources().getDrawable(R.drawable.ic_visibility_black_24dp));
         }
     }
 

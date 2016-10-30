@@ -7,7 +7,7 @@
     <item
         android:id="@+id/history_item"
         android:icon="@drawable/ic_view_agenda_black_24dp"
-        android:title="@string/history"/>
+        android:title="@string/saved_tracks"/>
     <item
         android:id="@+id/profile_item"
         android:icon="@drawable/ic_settings_black_24dp"

@@ -10,6 +10,9 @@ public interface TrackContract {
 
         void showTrackInfo(Track track);
 
+        void showToast(String message);
+
+        void finishActivity();
     }
 
     interface Presenter extends BasePresenter<View>{

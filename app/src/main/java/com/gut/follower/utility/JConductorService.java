@@ -43,6 +43,6 @@ public interface JConductorService {
     Call<Account> postAccountInfo(@Body Account account);
 
     @GET("/rest/account")
-    Call<Account> getAccointInfo();
+    Call<Account> getAccountInfo();
 
 }

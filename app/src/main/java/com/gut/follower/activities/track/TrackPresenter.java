@@ -26,13 +26,15 @@ public class TrackPresenter implements TrackContract.Presenter{
                 if(response.isSuccessful()){
                     view.showTrackInfo(response.body());
                 } else {
-
+                    view.showToast(response.message());
+                    view.finishActivity();
                 }
             }
 
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
-
+                view.showToast(t.getMessage());
+                view.finishActivity();
             }
         });
     }

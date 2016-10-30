@@ -8,4 +8,6 @@ public class ApplicationConstants {
     //Modes
     public static final String RUN_MODE = "runMode";
     public static final String BIKE_MODE = "bikeMode";
+
+    public static final String EMPTY_STRING = "";
 }

@@ -1,4 +1,4 @@
-package com.gut.follower.activities.main.history;
+package com.gut.follower.activities.main.savedtracks;
 
 
 import android.os.Bundle;
@@ -20,15 +20,15 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements HistoryContract.View {
+public class SavedTracksFragment extends Fragment implements SavedTracksContract.View {
 
     private RecyclerView mRecyclerView;
     private TextView mNoResults;
     private ProgressBar mProgressBar;
-    private TrackListAdapter mAdapter;
-    private HistoryContract.Presenter mPresenter;
+    private SavedTracksListAdapter mAdapter;
+    private SavedTracksContract.Presenter mPresenter;
 
-    public HistoryFragment() {
+    public SavedTracksFragment() {
         // Required empty public constructor
     }
 
@@ -36,9 +36,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history, container, false);
+        View view = inflater.inflate(R.layout.fragment_saved_tracks, container, false);
 
-        mPresenter = new HistoryPresenter();
+        mPresenter = new SavedTracksPresenter();
         mPresenter.attachView(this);
 
         mNoResults = (TextView)view.findViewById(R.id.no_results);
@@ -69,7 +69,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         if (!trackList.isEmpty()) {
             mNoResults.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new TrackListAdapter(getContext(), trackList);
+            mAdapter = new SavedTracksListAdapter(getContext(), trackList);
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

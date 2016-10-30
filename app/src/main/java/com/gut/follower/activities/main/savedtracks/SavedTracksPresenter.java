@@ -1,4 +1,4 @@
-package com.gut.follower.activities.main.history;
+package com.gut.follower.activities.main.savedtracks;
 
 import com.gut.follower.model.Track;
 import com.gut.follower.utility.JConductorService;
@@ -11,11 +11,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HistoryPresenter implements HistoryContract.Presenter{
+public class SavedTracksPresenter implements SavedTracksContract.Presenter{
 
-    public static String TAG = "HistoryPresenter";
+    public static String TAG = "SavedTracksPresenter";
 
-    private HistoryContract.View view;
+    private SavedTracksContract.View view;
 
     @Override
     public void loadTracks() {
@@ -29,7 +29,9 @@ public class HistoryPresenter implements HistoryContract.Presenter{
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 if (response.isSuccessful()) {
-                    view.showTrackList(response.body());
+                    if (view != null) {
+                        view.showTrackList(response.body());
+                    }
                 }
             }
 
@@ -46,7 +48,7 @@ public class HistoryPresenter implements HistoryContract.Presenter{
     }
 
     @Override
-    public void attachView(HistoryContract.View view) {
+    public void attachView(SavedTracksContract.View view) {
         this.view = view;
     }
 

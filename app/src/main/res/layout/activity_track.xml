@@ -67,6 +67,7 @@
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_weight="2"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -93,7 +94,6 @@
                 <TextView
                     android:textSize="50sp"
                     android:textStyle="bold"
-                    android:text="11.0"
                     android:id="@+id/track_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -117,7 +117,6 @@
                 <TextView
                     android:textSize="50sp"
                     android:textStyle="bold"
-                    android:text="11.0"
                     android:id="@+id/track_time_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -148,7 +147,6 @@
                 <TextView
                     android:textSize="50sp"
                     android:textStyle="bold"
-                    android:text="11.0"
                     android:id="@+id/track_avg_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -172,7 +170,6 @@
                 <TextView
                     android:textSize="50sp"
                     android:textStyle="bold"
-                    android:text="11.0"
                     android:id="@+id/track_max_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

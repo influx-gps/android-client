@@ -4,11 +4,10 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
-import com.gut.follower.activities.main.history.HistoryFragment;
+import com.gut.follower.activities.main.savedtracks.SavedTracksFragment;
 import com.gut.follower.activities.main.startRecording.StartRecordingFragment;
 import com.gut.follower.activities.main.userPanel.UserPanelFragment;
 import com.roughike.bottombar.BottomBar;
@@ -39,7 +38,7 @@ public class MainActivity extends BaseActivity {
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 switch(menuItemId){
                     case R.id.record_item:  commitFragment(new StartRecordingFragment()); break;
-                    case R.id.history_item: commitFragment(new HistoryFragment());break;
+                    case R.id.history_item: commitFragment(new SavedTracksFragment());break;
                     case R.id.profile_item: commitFragment(new UserPanelFragment());break;
                 }
             }

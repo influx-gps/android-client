@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -19,8 +21,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
+import com.gut.follower.commons.DateConverter;
 import com.gut.follower.commons.LocationConverter;
 import com.gut.follower.model.Track;
+import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
 
@@ -36,6 +40,10 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     private FloatingActionButton normal;
     private FloatingActionButton satellite;
     private Toolbar toolbar;
+    private TextView trackDistance;
+    private TextView trackDuration;
+    private TextView trackAvgSpeed;
+    private TextView trackMaxSpeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +54,19 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setTitle("12.06.2016");
+            getSupportActionBar().setTitle(ApplicationConstants.EMPTY_STRING);
         }
-
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         initViewVariables();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         String trackId = getIntent().getStringExtra("trackId");
         mPresenter.loadTrack(trackId);
     }
@@ -84,6 +95,10 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
                 .color(Color.BLUE)
                 .width(7f);
 
+        trackAvgSpeed = (TextView)findViewById(R.id.track_avg_speed);
+        trackDistance = (TextView)findViewById(R.id.track_distance);
+        trackDuration = (TextView)findViewById(R.id.track_time_duration);
+        trackMaxSpeed = (TextView)findViewById(R.id.track_max_speed);
         fabMenu = (FloatingActionsMenu)findViewById(R.id.fab_menu);
         normal = (FloatingActionButton)findViewById(R.id.normal_mode);
         terrain = (FloatingActionButton)findViewById(R.id.terrain_mode);
@@ -103,7 +118,29 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     @Override
     public void showTrackInfo(Track track) {
         drawTrackOnMap(LocationConverter.getLatLngLocations(track.getLocations()));
-        //TODO: show some track information
+        getSupportActionBar().setTitle(DateConverter.convertDateWithTime(track.getStartTime()));
+        setValue(trackDistance, track.getDistance());
+        setValue(trackAvgSpeed, track.getAvgSpeed());
+        trackDuration.setText(DateConverter.convertToTime(track.getStartTime(), track.getFinishTime()));
+        setValue(trackMaxSpeed, track.getMaxSpeed());
+    }
+
+    private void setValue(TextView textView, Double value) {
+        if (value != null) {
+            textView.setText(String.format("%.2f", value));
+        } else {
+            textView.setText("n/a");
+        }
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 
 

@@ -1,4 +1,4 @@
-package com.gut.follower.activities.main.history;
+package com.gut.follower.activities.main.savedtracks;
 
 import com.gut.follower.activities.BasePresenter;
 import com.gut.follower.activities.BaseView;
@@ -6,7 +6,7 @@ import com.gut.follower.model.Track;
 
 import java.util.List;
 
-public interface HistoryContract {
+public interface SavedTracksContract {
 
     interface View extends BaseView{
 
