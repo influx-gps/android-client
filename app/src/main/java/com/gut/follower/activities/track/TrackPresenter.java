@@ -5,6 +5,7 @@ import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
 import com.gut.follower.utility.SessionManager;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,9 +13,11 @@ import retrofit2.Response;
 public class TrackPresenter implements TrackContract.Presenter{
 
     private TrackContract.View view;
+    private String trackId;
 
     @Override
-    public void loadTrack(String trackId) {
+    public void loadTrack(final String trackId) {
+        this.trackId = trackId;
         JConductorService restApi = ServiceGenerator
                 .createService(JConductorService.class,
                         SessionManager.getUsername(),
@@ -35,6 +38,30 @@ public class TrackPresenter implements TrackContract.Presenter{
             public void onFailure(Call<Track> call, Throwable t) {
                 view.showToast(t.getMessage());
                 view.finishActivity();
+            }
+        });
+    }
+
+    @Override
+    public void deleteTrack() {
+        JConductorService restApi = ServiceGenerator
+                .createService(JConductorService.class,
+                        SessionManager.getUsername(),
+                        SessionManager.getPassword());
+        Call<ResponseBody> call = restApi.deleteTrack(trackId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    view.startMainActivity();
+                } else {
+                    view.showToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                view.showToast(t.getMessage());
             }
         });
     }

@@ -6,6 +6,7 @@ import com.gut.follower.utility.JConductorService;
 import com.gut.follower.utility.ServiceGenerator;
 import com.gut.follower.utility.SessionManager;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,6 +61,27 @@ public class UserPanelPresenter implements UserPanelContract.Presenter{
 
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
+                view.showToast(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void deleteAccount() {
+        JConductorService restApi = getRestService();
+        Call<ResponseBody> call = restApi.deleteAccount();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    AuthenticationManager.logout();
+                } else {
+                    view.showToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 view.showToast(t.getMessage());
             }
         });

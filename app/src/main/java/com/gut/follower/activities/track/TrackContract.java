@@ -13,10 +13,14 @@ public interface TrackContract {
         void showToast(String message);
 
         void finishActivity();
+
+        void startMainActivity();
     }
 
     interface Presenter extends BasePresenter<View>{
 
         void loadTrack(String trackId);
+
+        void deleteTrack();
     }
 }

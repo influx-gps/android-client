@@ -10,6 +10,7 @@ import com.gut.follower.activities.BaseActivity;
 import com.gut.follower.activities.main.savedtracks.SavedTracksFragment;
 import com.gut.follower.activities.main.startRecording.StartRecordingFragment;
 import com.gut.follower.activities.main.userPanel.UserPanelFragment;
+import com.gut.follower.utility.ApplicationConstants;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -30,9 +31,12 @@ public class MainActivity extends BaseActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
         bottomBar = BottomBar.attach(this, savedInstanceState);
         bottomBar.setItems(R.menu.three_buttons_menu);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null && "1".equals(extras.getString(ApplicationConstants.BUNDLE_MAIN_ACTIVITY_TAB, "0"))){
+            bottomBar.selectTabAtPosition(1, false);
+        }
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {

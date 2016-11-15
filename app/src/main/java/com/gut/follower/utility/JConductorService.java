@@ -8,8 +8,10 @@ import com.gut.follower.model.Track;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -26,6 +28,9 @@ public interface JConductorService {
 
     @GET("/rest/track/{id}")
     Call<Track> getTrack(@Path("id") String id);
+
+    @DELETE("/rest/track/{id}")
+    Call<ResponseBody> deleteTrack(@Path("id") String id);
 
     @GET("/rest/track")
     Call<List<Track>> getTracks();
@@ -44,5 +49,8 @@ public interface JConductorService {
 
     @GET("/rest/account")
     Call<Account> getAccountInfo();
+
+    @DELETE("/rest/account")
+    Call<ResponseBody> deleteAccount();
 
 }

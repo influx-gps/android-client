@@ -1,5 +1,6 @@
 package com.gut.follower.activities.track;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
+import com.gut.follower.activities.main.MainActivity;
 import com.gut.follower.commons.DateConverter;
 import com.gut.follower.commons.LocationConverter;
 import com.gut.follower.model.Track;
@@ -81,7 +83,7 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_delete:
-//                mPresenter.deleteTrack();
+                mPresenter.deleteTrack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -141,6 +143,14 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    @Override
+    public void startMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra(ApplicationConstants.BUNDLE_MAIN_ACTIVITY_TAB, "1");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 

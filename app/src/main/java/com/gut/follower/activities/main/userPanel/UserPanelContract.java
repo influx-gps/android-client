@@ -22,5 +22,7 @@ public interface UserPanelContract {
         void editEmail(String email);
 
         void editPassword(String password);
+
+        void deleteAccount();
     }
 }

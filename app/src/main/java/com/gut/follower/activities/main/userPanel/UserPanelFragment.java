@@ -80,7 +80,7 @@ public class UserPanelFragment extends Fragment implements UserPanelContract.Vie
                 mPresenter.logout();
                 break;
             case R.id.delete_btn:
-                Toast.makeText(getContext(), "Please, don't!", Toast.LENGTH_SHORT).show();
+                mPresenter.deleteAccount();
                 break;
             case R.id.email_edit:
                 showEditEmailDialog(getString(R.string.edit_email));
