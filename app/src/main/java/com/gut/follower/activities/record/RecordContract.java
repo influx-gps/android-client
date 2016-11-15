@@ -6,6 +6,7 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 import com.gut.follower.activities.BasePresenter;
 import com.gut.follower.activities.BaseView;
+import com.gut.follower.model.Track;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface RecordContract {
         void startStopper();
 
         void showToast(String message);
+
+        void setTrackInfo(Track track);
     }
 
     interface Presenter extends BasePresenter<View>{

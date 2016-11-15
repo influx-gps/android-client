@@ -43,7 +43,7 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
     private TextView trackDistance;
     private TextView trackDuration;
     private TextView trackAvgSpeed;
-    private TextView trackMaxSpeed;
+    private TextView trackRunPace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         trackAvgSpeed = (TextView)findViewById(R.id.track_avg_speed);
         trackDistance = (TextView)findViewById(R.id.track_distance);
         trackDuration = (TextView)findViewById(R.id.track_time_duration);
-        trackMaxSpeed = (TextView)findViewById(R.id.track_max_speed);
+        trackRunPace = (TextView)findViewById(R.id.track_run_pace);
         fabMenu = (FloatingActionsMenu)findViewById(R.id.fab_menu);
         normal = (FloatingActionButton)findViewById(R.id.normal_mode);
         terrain = (FloatingActionButton)findViewById(R.id.terrain_mode);
@@ -122,12 +122,12 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         setValue(trackDistance, track.getDistance());
         setValue(trackAvgSpeed, track.getAvgSpeed());
         trackDuration.setText(DateConverter.convertToTime(track.getStartTime(), track.getFinishTime()));
-        setValue(trackMaxSpeed, track.getMaxSpeed());
+        setValue(trackRunPace, track.getRunPace());
     }
 
     private void setValue(TextView textView, Double value) {
         if (value != null) {
-            textView.setText(String.format("%.2f", value));
+            textView.setText(String.format("%.2f", value).replace(",", "."));
         } else {
             textView.setText("n/a");
         }

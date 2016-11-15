@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.gut.follower.R;
 import com.gut.follower.activities.BaseActivity;
 import com.gut.follower.activities.track.TrackActivity;
+import com.gut.follower.model.Track;
 import com.gut.follower.utility.ApplicationConstants;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     private GoogleMap map;
     private Button mStopButton;
     private TextView distance;
+    private TextView avgSpeed;
     private Chronometer mChronometer;
 
     private FloatingActionsMenu fabMenu;
@@ -76,6 +78,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
         mPresenter = new RecordPresenter(this);
         mStopButton = (Button)findViewById(R.id.stop_recording);
         distance = (TextView)findViewById(R.id.distance);
+        avgSpeed = (TextView)findViewById(R.id.record_track_avg_speed);
         options = new PolylineOptions()
                 .color(Color.BLUE)
                 .width(5f);
@@ -162,7 +165,7 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
 
     @Override
     public void setDistance(Double distance) {
-        this.distance.setText(String.format("%.2f", distance));
+        this.distance.setText(String.format("%.2f", distance).replace(",", "."));
     }
 
     @Override
@@ -173,6 +176,20 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
     @Override
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setTrackInfo(Track track) {
+        setValue(distance,track.getDistance());
+        setValue(avgSpeed, track.getAvgSpeed());
+    }
+
+    private void setValue(TextView textView, Double value) {
+        if (value != null) {
+            textView.setText(String.format("%.2f", value).replace(",","."));
+        } else {
+            textView.setText("0.00");
+        }
     }
 
     private void stopRecording() {

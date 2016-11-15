@@ -15,7 +15,7 @@ public class Track {
 
     private Double avgSpeed;
 
-    private Double maxSpeed;
+    private Double runPace;
 
     private Double distance;
 
@@ -81,12 +81,12 @@ public class Track {
         this.avgSpeed = avgSpeed;
     }
 
-    public Double getMaxSpeed() {
-        return maxSpeed;
+    public Double getRunPace() {
+        return runPace;
     }
 
-    public void setMaxSpeed(Double maxSpeed) {
-        this.maxSpeed = maxSpeed;
+    public void setRunPace(Double runPace) {
+        this.runPace = runPace;
     }
 
     public Double getDistance() {

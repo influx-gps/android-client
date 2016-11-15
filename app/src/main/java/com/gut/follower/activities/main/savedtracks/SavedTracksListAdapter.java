@@ -40,9 +40,9 @@ public class SavedTracksListAdapter extends RecyclerView.Adapter<SavedTracksList
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Track track = trackList.get(position);
-        holder.trackDistance.setText(String.format("%.2f", track.getDistance()));
+        holder.trackDistance.setText(String.format("%.2f", track.getDistance()).replace(",", "."));
         setDate(holder, track.getStartTime());
-        holder.trackAvgSpeed.setText(String.format("%.2f", track.getAvgSpeed()));
+        holder.trackAvgSpeed.setText(String.format("%.2f", track.getAvgSpeed()).replace(",", "."));
         holder.trackDuration.setText(getFormattedTime(track.getStartTime(), track.getFinishTime()));
         setActivity(holder, track.getActivity());
         holder.row.setOnClickListener(new View.OnClickListener() {
