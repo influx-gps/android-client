@@ -23,7 +23,7 @@ public class GpsProvider implements LocationListener{
     }
 
     public void start(){
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 3, this);
     }
 
     public void stop(){
