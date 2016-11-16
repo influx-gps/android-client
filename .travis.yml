@@ -11,5 +11,3 @@ android:
   - extra-android-support
   - extra-android-m2repository
   - extra-google-m2repository
-before_install:
-  - export TZ=Poland/Warsaw

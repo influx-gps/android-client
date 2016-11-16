@@ -35,7 +35,7 @@ public class DateConverterTest {
     @Test
     public void shouldFormatUnixStampToDateWithTime(){
         long startTime = 1475327105000L;
-        String date = DateConverter.convertDateWithTime(startTime);
+        String date = DateConverter.convertDateWithTime(startTime, TimeZone.getTimeZone("GMT+2"));
         assertThat(date, is("01-10-2016 15:05"));
     }
 
