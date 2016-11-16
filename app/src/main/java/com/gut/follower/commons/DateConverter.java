@@ -2,6 +2,7 @@ package com.gut.follower.commons;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateConverter {
 
@@ -15,8 +16,16 @@ public class DateConverter {
     }
 
     public static String convertDateWithTime(long time){
+        return convertDateWithTime(time, null);
+    }
+
+    public static String convertDateWithTime(long time, TimeZone timeZone){
         Date date = new Date(time);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_TIME);
+        if(timeZone != null)
+            simpleDateFormat.setTimeZone(timeZone);
+        else
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
         return simpleDateFormat.format(date);
     }
 

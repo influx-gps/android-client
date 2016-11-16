@@ -1,11 +1,21 @@
 package com.gut.follower.commons;
 
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.when;
 
 public class DateConverterTest {
+
+    @Mock
+    SimpleDateFormat simpleDateFormat;
 
     @Test
     public void shouldConvertTwoUnixTimeStampsToFormattedTimeDuration(){
@@ -28,4 +38,5 @@ public class DateConverterTest {
         String date = DateConverter.convertDateWithTime(startTime);
         assertThat(date, is("01-10-2016 15:05"));
     }
+
 }
