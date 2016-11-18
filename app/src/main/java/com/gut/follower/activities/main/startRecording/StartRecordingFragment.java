@@ -97,7 +97,7 @@ public class StartRecordingFragment extends Fragment implements StartRecordingCo
     public void startRecordingActivity(String mode) {
         if (getGpsStatus()) {
             Intent intent = new Intent(getContext(), RecordActivity.class);
-            intent.putExtra(mode, ApplicationConstants.BUNDLE_MODE);
+            intent.putExtra(ApplicationConstants.BUNDLE_MODE, mode);
             startActivity(intent);
         } else {
             Toast.makeText(getContext(), "Turn on gps", Toast.LENGTH_SHORT).show();
