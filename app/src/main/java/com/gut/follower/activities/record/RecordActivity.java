@@ -80,8 +80,8 @@ public class RecordActivity extends BaseActivity implements RecordContract.View,
         distance = (TextView)findViewById(R.id.distance);
         avgSpeed = (TextView)findViewById(R.id.record_track_avg_speed);
         options = new PolylineOptions()
-                .color(Color.BLUE)
-                .width(5f);
+                .color(getResources().getColor(R.color.track_color))
+                .width(8f);
         mChronometer = (Chronometer)findViewById(R.id.chronometer);
         fabMenu = (FloatingActionsMenu)findViewById(R.id.fab_menu);
         normal = (FloatingActionButton)findViewById(R.id.normal_mode);

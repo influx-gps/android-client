@@ -35,6 +35,19 @@ public class DateConverter {
         long hours = time / 3600;
         long minutes = (time % 3600) / 60;
         long seconds = (time - hours*3600 - minutes*60);
-        return String.format("%d:%d:%d", hours, minutes, seconds);
+        if(hours == 0){
+            return String.format("%s:%s", appendZero(minutes), appendZero(seconds));
+        } else {
+            return String.format("%s:%s:%s", hours, appendZero(minutes), appendZero(seconds));
+        }
     }
+
+    private static String appendZero(long value) {
+        if(value / 10 == 0){
+            return "0"+String.valueOf(value);
+        } else {
+            return String.valueOf(value);
+        }
+    }
+
 }

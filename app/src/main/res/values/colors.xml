@@ -9,4 +9,5 @@
     <color name="black_semi_transparent">#9e000000</color>
     <color name="green">#409f37</color>
     <color name="background">#eeeeee</color>
+    <color name="track_color">#ee0088ff</color>
 </resources>

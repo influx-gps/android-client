@@ -94,8 +94,8 @@ public class TrackActivity extends BaseActivity implements TrackContract.View, O
         mPresenter = new TrackPresenter();
         mPresenter.attachView(this);
         options = new PolylineOptions()
-                .color(Color.BLUE)
-                .width(7f);
+                .color(getResources().getColor(R.color.track_color))
+                .width(8f);
 
         trackAvgSpeed = (TextView)findViewById(R.id.track_avg_speed);
         trackDistance = (TextView)findViewById(R.id.track_distance);
