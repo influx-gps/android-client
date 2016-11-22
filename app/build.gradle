@@ -13,7 +13,7 @@ android {
     }
     productFlavors {
         develop {
-            buildConfigField 'String', 'HOST', '"http://jconductor.cfapps.io"'
+            buildConfigField 'String', 'HOST', '"http://jconductor.ontap07.demo-gotapaas.com"'
             buildConfigField 'String', 'USERNAME', '"TestUser"'
             buildConfigField 'String', 'PASSWORD', '"TestPassword"'
         }
